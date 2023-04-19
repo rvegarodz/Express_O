@@ -6,6 +6,7 @@ General descirption: Our coffee reward programs is a point-based program designe
 ## Front-end and Database
  - Dart / Flutter / Firebase:
     - To start building a flutter app: https://docs.flutter.dev/get-started/codelab
+    - https://protocoderspoint.com/paypal-payment-integration-in-flutter-app/
     
 ## Web3
  - Web3 information:
