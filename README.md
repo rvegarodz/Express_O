@@ -3,19 +3,15 @@
 General descirption: Our coffee reward programs is a point-based program designed to increase customer engagement and purchases in exchange for discounts and other benefits.
 
 
+## Front-end and Database
  - Dart / Flutter / Firebase:
     - To start building a flutter app: https://docs.flutter.dev/get-started/codelab
     
+## Web3
  - Web3 information:
-    - 
-    - 
-    - 
+    - example
    
- - Front-end information:
-    - 
-    - 
-
-Not our goal, right now. 
+## POS 
 - POS information (poynt):
     - poynt api: 
         - https://docs.poynt.com/api-reference/index.html#head-introduction
