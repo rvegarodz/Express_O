@@ -3,15 +3,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:logger/logger.dart';
 import 'home_page.dart';
 
-final FirebaseAuth _auth = FirebaseAuth.instance;
 final logger = Logger();
 
 class SignInPage extends StatefulWidget {
+  const SignInPage({super.key});
+
   @override
-  SignInPageState createState() => SignInPageState();
+  LogInPageState createState() => LogInPageState();
 }
 
-class SignInPageState extends State<SignInPage> {
+class LogInPageState extends State<SignInPage> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -27,7 +28,7 @@ class SignInPageState extends State<SignInPage> {
     );
   }
 
-  Future<void> _signInWithEmailAndPassword() async {
+  Future<void> _logInWithEmailAndPassword() async {
     setState(() {
       _isLoading = true;
     });
@@ -54,7 +55,7 @@ class SignInPageState extends State<SignInPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Sign In'),
+        title: const Text('Log In'),
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
@@ -91,10 +92,10 @@ class SignInPageState extends State<SignInPage> {
                     ElevatedButton(
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
-                          _signInWithEmailAndPassword();
+                          _logInWithEmailAndPassword();
                         }
                       },
-                      child: const Text('Sign In'),
+                      child: const Text('Log In'),
                     ),
                   ],
                 ),

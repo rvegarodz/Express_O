@@ -35,19 +35,11 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
   void _navigateToSignInPage() {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => SignInPage(),
+        builder: (context) => const SignInPage(),
       ),
     );
   }
@@ -64,43 +56,29 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: const TextStyle(fontSize: 36),
-            ),
-            const SizedBox(height: 24),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                  onPressed: _navigateToSignInPage,
-                  child: const Text('Log In'),
-                ),
-                const SizedBox(width: 16),
-                ElevatedButton(
-                  onPressed: _navigateToSignUpPage,
-                  child: const Text('Sign Up'),
-                ),
-              ],
-            ),
-          ],
+        appBar: AppBar(
+          title: Text(widget.title),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
-    );
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    onPressed: _navigateToSignInPage,
+                    child: const Text('Log In'),
+                  ),
+                  const SizedBox(width: 16),
+                  ElevatedButton(
+                    onPressed: _navigateToSignUpPage,
+                    child: const Text('Sign Up'),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ));
   }
 }

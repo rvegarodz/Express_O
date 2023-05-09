@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'home_page.dart';
 
-final FirebaseAuth _auth = FirebaseAuth.instance;
-
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
 
@@ -16,6 +14,8 @@ class SignUpPageState extends State<SignUpPage> {
 
   late String _email;
   late String _password;
+  late String name;
+  late String age;
 
   bool _isLoading = false;
 
