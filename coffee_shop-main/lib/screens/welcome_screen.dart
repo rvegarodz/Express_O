@@ -1,4 +1,5 @@
-import 'package:coffee_shop/screens/home_screen.dart';
+import 'log_in_screen.dart';
+import 'package:coffee_shop/screens/sign_up_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -28,6 +29,63 @@ class WelcomeScreen extends StatelessWidget {
             ),
             Column(
               children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    SizedBox(height: 80),
+                    Material(
+                      color: Color(0xFFE57734),
+                      borderRadius: BorderRadius.circular(10),
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => LogInPage(),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                              vertical: 15, horizontal: 50),
+                          child: Text("Log In",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 1,
+                              )),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 80),
+                    Material(
+                      color: Color(0xFFE57734),
+                      borderRadius: BorderRadius.circular(10),
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SignUpPage(),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                              vertical: 15, horizontal: 50),
+                          child: Text("Sign Up",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 1,
+                              )),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
                 Text(
                   "Feeling Low? Take a Sip of Coffee",
                   style: TextStyle(
@@ -35,32 +93,6 @@ class WelcomeScreen extends StatelessWidget {
                     fontSize: 18,
                     fontWeight: FontWeight.w500,
                     letterSpacing: 1,
-                  ),
-                ),
-                SizedBox(height: 80),
-                Material(
-                  color: Color(0xFFE57734),
-                  borderRadius: BorderRadius.circular(10),
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => HomeScreen(),
-                        ),
-                      );
-                    },
-                    child: Container(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 15, horizontal: 50),
-                      child: Text("Get Start",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 1,
-                          )),
-                    ),
                   ),
                 ),
               ],

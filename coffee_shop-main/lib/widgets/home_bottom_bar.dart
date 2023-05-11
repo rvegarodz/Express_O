@@ -1,3 +1,4 @@
+import 'package:coffee_shop/screens/log_in_screen.dart';
 import 'package:flutter/material.dart';
 
 class HomeBottomBar extends StatelessWidget {
@@ -17,28 +18,56 @@ class HomeBottomBar extends StatelessWidget {
         ],
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Icon(
-            Icons.home,
-            color: Colors.white,
-            size: 35,
-          ),
-          Icon(
-            Icons.favorite_outline,
-            color: Colors.white,
-            size: 35,
-          ),
-          Icon(
-            Icons.notifications,
-            color: Colors.white,
-            size: 35,
-          ),
-          Icon(
-            Icons.person,
-            color: Colors.white,
-            size: 35,
-          ),
+          SizedBox(height: 80),
+          Material(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+              child: InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => LogInPage(),
+                    ),
+                  );
+                },
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: 15, horizontal: 50),
+                  child: Text("Order",
+                      style: TextStyle(
+                        color: Color(0xFFE57734),
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 1,
+                      )),
+                ),
+              )),
+          SizedBox(height: 80),
+          Material(
+              color: Color(0xFFE57734),
+              borderRadius: BorderRadius.circular(10),
+              child: InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => LogInPage(),
+                    ),
+                  );
+                },
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: 15, horizontal: 50),
+                  child: Text("Pay",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 1,
+                      )),
+                ),
+              ))
         ],
       ),
     );
