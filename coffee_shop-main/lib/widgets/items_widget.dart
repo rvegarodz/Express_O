@@ -1,8 +1,8 @@
 import 'package:coffee_shop/screens/single_item_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 
+// ignore: must_be_immutable
 class ItemsWidget extends StatelessWidget {
   List img = [
     'Latte',
