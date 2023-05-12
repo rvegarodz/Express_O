@@ -90,6 +90,9 @@ class LogInPageState extends State<LogInPage> {
                                   labelText: 'Email',
                                   filled: true,
                                   fillColor: Colors.white,
+                                  labelStyle: TextStyle(
+                                    color: Color(0xFFE57734),
+                                  ),
                                 ),
                                 keyboardType: TextInputType.emailAddress,
                                 validator: (value) {
@@ -105,7 +108,10 @@ class LogInPageState extends State<LogInPage> {
                                 decoration: const InputDecoration(
                                     labelText: 'Password',
                                     filled: true,
-                                    fillColor: Colors.white),
+                                    fillColor: Colors.white,
+                                    labelStyle: TextStyle(
+                                      color: Color(0xFFE57734),
+                                    )),
                                 obscureText: true,
                                 validator: (value) {
                                   if (value!.isEmpty) {
