@@ -151,9 +151,23 @@ class _ItemsWidgetState extends State<ItemsWidget> {
                             itemBuilder: (BuildContext context) {
                               return <PopupMenuEntry<String>>[
                                 PopupMenuItem<String>(
-                                  value: 'option1',
+                                  enabled: false,
+                                  child: Container(
+                                    padding: EdgeInsets.all(8),
+                                    child: Text(
+                                      'Choose Options',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                PopupMenuDivider(),
+                                PopupMenuItem<String>(
+                                  value: 'milk1',
                                   child: ListTile(
-                                    title: Text('Option 1'),
+                                    title: Text('Milk Option 1'),
                                     leading: Checkbox(
                                       value: false,
                                       onChanged: (value) {},
@@ -161,9 +175,9 @@ class _ItemsWidgetState extends State<ItemsWidget> {
                                   ),
                                 ),
                                 PopupMenuItem<String>(
-                                  value: 'option2',
+                                  value: 'milk2',
                                   child: ListTile(
-                                    title: Text('Option 2'),
+                                    title: Text('Milk Option 2'),
                                     leading: Checkbox(
                                       value: false,
                                       onChanged: (value) {},
@@ -171,9 +185,71 @@ class _ItemsWidgetState extends State<ItemsWidget> {
                                   ),
                                 ),
                                 PopupMenuItem<String>(
-                                  value: 'option3',
+                                  value: 'milk3',
                                   child: ListTile(
-                                    title: Text('Option 3'),
+                                    title: Text('Milk Option 3'),
+                                    leading: Checkbox(
+                                      value: false,
+                                      onChanged: (value) {},
+                                    ),
+                                  ),
+                                ),
+                                PopupMenuDivider(),
+                                PopupMenuItem<String>(
+                                  value: 'sugar1',
+                                  child: ListTile(
+                                    title: Text('Sugar Option 1'),
+                                    leading: Checkbox(
+                                      value: false,
+                                      onChanged: (value) {},
+                                    ),
+                                  ),
+                                ),
+                                PopupMenuItem<String>(
+                                  value: 'sugar2',
+                                  child: ListTile(
+                                    title: Text('Sugar Option 2'),
+                                    leading: Checkbox(
+                                      value: false,
+                                      onChanged: (value) {},
+                                    ),
+                                  ),
+                                ),
+                                PopupMenuItem<String>(
+                                  value: 'sugar3',
+                                  child: ListTile(
+                                    title: Text('Sugar Option 3'),
+                                    leading: Checkbox(
+                                      value: false,
+                                      onChanged: (value) {},
+                                    ),
+                                  ),
+                                ),
+                                PopupMenuDivider(),
+                                PopupMenuItem<String>(
+                                  value: 'size1',
+                                  child: ListTile(
+                                    title: Text('Size Option 1'),
+                                    leading: Checkbox(
+                                      value: false,
+                                      onChanged: (value) {},
+                                    ),
+                                  ),
+                                ),
+                                PopupMenuItem<String>(
+                                  value: 'size2',
+                                  child: ListTile(
+                                    title: Text('Size Option 2'),
+                                    leading: Checkbox(
+                                      value: false,
+                                      onChanged: (value) {},
+                                    ),
+                                  ),
+                                ),
+                                PopupMenuItem<String>(
+                                  value: 'size3',
+                                  child: ListTile(
+                                    title: Text('Size Option 3'),
                                     leading: Checkbox(
                                       value: false,
                                       onChanged: (value) {},
