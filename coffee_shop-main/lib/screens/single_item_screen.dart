@@ -1,10 +1,12 @@
+import 'package:coffee_shop/widgets/items_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-// ignore: must_be_immutable
 class SingleItemScreen extends StatelessWidget {
-  String img;
-  SingleItemScreen(this.img);
+  final Item item;
+
+  const SingleItemScreen({required this.item});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +30,7 @@ class SingleItemScreen extends StatelessWidget {
                 SizedBox(height: 50),
                 Center(
                   child: Image.asset(
-                    "images/$img.png",
+                    "images/${item.image}",
                     width: MediaQuery.of(context).size.width / 1.2,
                   ),
                 ),
@@ -47,7 +49,7 @@ class SingleItemScreen extends StatelessWidget {
                       ),
                       SizedBox(height: 20),
                       Text(
-                        img,
+                        item.name,
                         style: TextStyle(
                           fontSize: 30,
                           letterSpacing: 1,
@@ -96,7 +98,7 @@ class SingleItemScreen extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              "\$ 5.00",
+                              "\$ ${item.price}",
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w500,
@@ -108,8 +110,7 @@ class SingleItemScreen extends StatelessWidget {
                       ),
                       SizedBox(height: 20),
                       Text(
-                        "Coffee is a major source of antioxidants in the diet."
-                        " It has many healt benefits",
+                        "${item.description}",
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
