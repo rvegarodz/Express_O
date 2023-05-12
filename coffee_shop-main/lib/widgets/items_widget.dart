@@ -85,9 +85,7 @@ class _ItemsWidgetState extends State<ItemsWidget> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => SingleItemScreen(
-                          item: items[i],
-                        ),
+                        builder: (context) => SingleItemScreen(item: items[i]),
                       ),
                     );
                   },
@@ -149,13 +147,49 @@ class _ItemsWidgetState extends State<ItemsWidget> {
                             color: Color(0xFFE57734),
                             borderRadius: BorderRadius.circular(20),
                           ),
-                          child: Icon(
-                            CupertinoIcons.add,
-                            size: 20,
-                            color: Colors.white,
+                          child: PopupMenuButton<String>(
+                            itemBuilder: (BuildContext context) {
+                              return <PopupMenuEntry<String>>[
+                                PopupMenuItem<String>(
+                                  value: 'option1',
+                                  child: ListTile(
+                                    title: Text('Option 1'),
+                                    leading: Checkbox(
+                                      value: false,
+                                      onChanged: (value) {},
+                                    ),
+                                  ),
+                                ),
+                                PopupMenuItem<String>(
+                                  value: 'option2',
+                                  child: ListTile(
+                                    title: Text('Option 2'),
+                                    leading: Checkbox(
+                                      value: false,
+                                      onChanged: (value) {},
+                                    ),
+                                  ),
+                                ),
+                                PopupMenuItem<String>(
+                                  value: 'option3',
+                                  child: ListTile(
+                                    title: Text('Option 3'),
+                                    leading: Checkbox(
+                                      value: false,
+                                      onChanged: (value) {},
+                                    ),
+                                  ),
+                                ),
+                              ];
+                            },
+                            child: Icon(
+                              CupertinoIcons.add,
+                              size: 20,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),

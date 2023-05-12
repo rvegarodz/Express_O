@@ -5,7 +5,7 @@ import 'package:coffee_shop/screens/home_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class LogInPage extends StatefulWidget {
-  const LogInPage({super.key});
+  const LogInPage({Key? key}) : super(key: key);
 
   @override
   LogInPageState createState() => LogInPageState();
@@ -19,7 +19,7 @@ class LogInPageState extends State<LogInPage> {
   bool _isLoading = false;
   final logger = Logger();
 
-  void _navigateToHomePage(User user) {
+  void _navigateToHomePage(User? user) {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -41,7 +41,7 @@ class LogInPageState extends State<LogInPage> {
       );
 
       final user = userCredential.user;
-      _navigateToHomePage(user!);
+      _navigateToHomePage(user);
     } on FirebaseAuthException catch (e) {
       logger.e('Error message: $e');
     } finally {
@@ -123,12 +123,7 @@ class LogInPageState extends State<LogInPage> {
                                     borderRadius: BorderRadius.circular(10),
                                     child: InkWell(
                                       onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => LogInPage(),
-                                          ),
-                                        );
+                                        _logInWithEmailAndPassword();
                                       },
                                       child: Container(
                                         padding: EdgeInsets.symmetric(
