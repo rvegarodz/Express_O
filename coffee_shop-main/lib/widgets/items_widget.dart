@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/cupertino.dart';
 import 'dart:convert';
+import 'popup_menu_botton.dart';
+import 'custom_snackbar.dart';
 
 class Item {
   final String name;
@@ -40,6 +42,15 @@ class _ItemsWidgetState extends State<ItemsWidget> {
     loadItems();
   }
 
+  void showCustomSnackBar(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return CustomSnackBar();
+      },
+    );
+  }
+
   Future<void> loadItems() async {
     final jsonString =
         await rootBundle.loadString('catalog/coffee_catalog.json');
@@ -59,27 +70,28 @@ class _ItemsWidgetState extends State<ItemsWidget> {
   @override
   Widget build(BuildContext context) {
     return GridView.count(
-        physics: NeverScrollableScrollPhysics(),
-        crossAxisCount: 2,
-        shrinkWrap: true,
-        childAspectRatio: (150 / 195),
-        children: [
-          for (int i = 0; i < items.length; i++)
-            Container(
-              padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-              margin: EdgeInsets.symmetric(vertical: 8, horizontal: 13),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: Color(0xFF212325),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.5),
-                    spreadRadius: 1,
-                    blurRadius: 8,
-                  ),
-                ],
-              ),
-              child: Column(children: [
+      physics: NeverScrollableScrollPhysics(),
+      crossAxisCount: 2,
+      shrinkWrap: true,
+      childAspectRatio: (150 / 195),
+      children: [
+        for (int i = 0; i < items.length; i++)
+          Container(
+            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+            margin: EdgeInsets.symmetric(vertical: 8, horizontal: 13),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: Color(0xFF212325),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.5),
+                  spreadRadius: 1,
+                  blurRadius: 8,
+                ),
+              ],
+            ),
+            child: Column(
+              children: [
                 InkWell(
                   onTap: () {
                     Navigator.push(
@@ -139,7 +151,7 @@ class _ItemsWidgetState extends State<ItemsWidget> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          // handle button press
+                          showCustomSnackBar(context); // handle button press
                         },
                         child: Container(
                           padding: EdgeInsets.all(5),
@@ -147,130 +159,20 @@ class _ItemsWidgetState extends State<ItemsWidget> {
                             color: Color(0xFFE57734),
                             borderRadius: BorderRadius.circular(20),
                           ),
-                          child: PopupMenuButton<String>(
-                            itemBuilder: (BuildContext context) {
-                              return <PopupMenuEntry<String>>[
-                                PopupMenuItem<String>(
-                                  enabled: false,
-                                  child: Container(
-                                    padding: EdgeInsets.all(8),
-                                    child: Text(
-                                      'Choose Options',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                PopupMenuDivider(),
-                                PopupMenuItem<String>(
-                                  value: 'milk1',
-                                  child: ListTile(
-                                    title: Text('Milk Option 1'),
-                                    leading: Checkbox(
-                                      value: false,
-                                      onChanged: (value) {},
-                                    ),
-                                  ),
-                                ),
-                                PopupMenuItem<String>(
-                                  value: 'milk2',
-                                  child: ListTile(
-                                    title: Text('Milk Option 2'),
-                                    leading: Checkbox(
-                                      value: false,
-                                      onChanged: (value) {},
-                                    ),
-                                  ),
-                                ),
-                                PopupMenuItem<String>(
-                                  value: 'milk3',
-                                  child: ListTile(
-                                    title: Text('Milk Option 3'),
-                                    leading: Checkbox(
-                                      value: false,
-                                      onChanged: (value) {},
-                                    ),
-                                  ),
-                                ),
-                                PopupMenuDivider(),
-                                PopupMenuItem<String>(
-                                  value: 'sugar1',
-                                  child: ListTile(
-                                    title: Text('Sugar Option 1'),
-                                    leading: Checkbox(
-                                      value: false,
-                                      onChanged: (value) {},
-                                    ),
-                                  ),
-                                ),
-                                PopupMenuItem<String>(
-                                  value: 'sugar2',
-                                  child: ListTile(
-                                    title: Text('Sugar Option 2'),
-                                    leading: Checkbox(
-                                      value: false,
-                                      onChanged: (value) {},
-                                    ),
-                                  ),
-                                ),
-                                PopupMenuItem<String>(
-                                  value: 'sugar3',
-                                  child: ListTile(
-                                    title: Text('Sugar Option 3'),
-                                    leading: Checkbox(
-                                      value: false,
-                                      onChanged: (value) {},
-                                    ),
-                                  ),
-                                ),
-                                PopupMenuDivider(),
-                                PopupMenuItem<String>(
-                                  value: 'size1',
-                                  child: ListTile(
-                                    title: Text('Size Option 1'),
-                                    leading: Checkbox(
-                                      value: false,
-                                      onChanged: (value) {},
-                                    ),
-                                  ),
-                                ),
-                                PopupMenuItem<String>(
-                                  value: 'size2',
-                                  child: ListTile(
-                                    title: Text('Size Option 2'),
-                                    leading: Checkbox(
-                                      value: false,
-                                      onChanged: (value) {},
-                                    ),
-                                  ),
-                                ),
-                                PopupMenuItem<String>(
-                                  value: 'size3',
-                                  child: ListTile(
-                                    title: Text('Size Option 3'),
-                                    leading: Checkbox(
-                                      value: false,
-                                      onChanged: (value) {},
-                                    ),
-                                  ),
-                                ),
-                              ];
-                            },
-                            child: Icon(
-                              CupertinoIcons.add,
-                              size: 20,
-                              color: Colors.white,
-                            ),
+                          child: Icon(
+                            CupertinoIcons.add,
+                            size: 20,
+                            color: Colors.white,
                           ),
                         ),
                       ),
                     ],
                   ),
                 ),
-              ]),
-            )
-        ]);
+              ],
+            ),
+          ),
+      ],
+    );
   }
 }
