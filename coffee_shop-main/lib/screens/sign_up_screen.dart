@@ -15,8 +15,6 @@ class SignUpPageState extends State<SignUpPage> {
 
   late String _email;
   late String _password;
-  late String name;
-  late String age;
 
   bool _isLoading = false;
 
@@ -125,6 +123,22 @@ class SignUpPageState extends State<SignUpPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
+                            const SizedBox(height: 16.0),
+                            TextFormField(
+                              decoration: const InputDecoration(
+                                  labelText: 'Name',
+                                  filled: true,
+                                  fillColor: Colors.white),
+                              keyboardType: TextInputType.name,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter your name.';
+                                }
+                                return null;
+                              },
+                              onChanged: (value) {},
+                            ),
+                            const SizedBox(height: 16.0),
                             TextFormField(
                               decoration: const InputDecoration(
                                   labelText: 'Email',

@@ -1,4 +1,5 @@
 import 'package:coffee_shop/screens/single_item_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/cupertino.dart';
@@ -27,17 +28,39 @@ class Item {
 }
 
 class ItemsWidget extends StatefulWidget {
+  final User user;
+  final List<dynamic> orderList;
+  final List<dynamic> orderItem = [];
+  final Function(List<dynamic>) updateOrderList;
+
+  ItemsWidget(
+      {Key? key,
+      required this.user,
+      required this.orderList,
+      required this.updateOrderList})
+      : super(key: key);
+
   @override
   _ItemsWidgetState createState() => _ItemsWidgetState();
 }
 
 class _ItemsWidgetState extends State<ItemsWidget> {
   List<Item> items = [];
+  List<dynamic> order = [];
 
   @override
   void initState() {
     super.initState();
     loadItems();
+  }
+
+  void _addToOrder(Item item) {
+    setState(() {
+      widget.orderItem.add(item.name);
+      widget.orderItem.add(item.price);
+      widget.orderList.add(widget.orderItem);
+      widget.updateOrderList(widget.orderList);
+    });
   }
 
   Future<void> loadItems() async {
@@ -53,6 +76,7 @@ class _ItemsWidgetState extends State<ItemsWidget> {
 
     setState(() {
       this.items = items;
+      this.order = order;
     });
   }
 
@@ -139,7 +163,7 @@ class _ItemsWidgetState extends State<ItemsWidget> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          // handle button press
+                          _addToOrder(items[i]); // handle button press
                         },
                         child: Container(
                           padding: EdgeInsets.all(5),

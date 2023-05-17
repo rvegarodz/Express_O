@@ -1,7 +1,19 @@
-import 'package:coffee_shop/screens/log_in_screen.dart';
+import 'package:coffee_shop/db/firebase_services.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class HomeBottomBar extends StatelessWidget {
+  final List<dynamic> orderList;
+  final User user;
+  final String time;
+
+  const HomeBottomBar(
+      {Key? key,
+      required this.orderList,
+      required this.user,
+      required this.time})
+      : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -26,12 +38,12 @@ class HomeBottomBar extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
               child: InkWell(
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => LogInPage(),
-                    ),
-                  );
+                  try {
+                    FirebaseService.getOrders(user.uid, time);
+                    print(orderList);
+                  } catch (e) {
+                    print("Error adding orders: $e");
+                  }
                 },
                 child: Container(
                   padding: EdgeInsets.symmetric(vertical: 15, horizontal: 50),
@@ -50,12 +62,14 @@ class HomeBottomBar extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
               child: InkWell(
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => LogInPage(),
-                    ),
-                  );
+                  try {
+                    print(orderList);
+                    FirebaseService.addOrders(user.uid, orderList, time);
+                    orderList.clear();
+                    print(orderList);
+                  } catch (e) {
+                    print("Error adding orders: $e");
+                  }
                 },
                 child: Container(
                   padding: EdgeInsets.symmetric(vertical: 15, horizontal: 50),
