@@ -5,7 +5,7 @@ import 'package:coffee_shop/screens/home_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class LogInPage extends StatefulWidget {
-  const LogInPage({super.key});
+  const LogInPage({Key? key}) : super(key: key);
 
   @override
   LogInPageState createState() => LogInPageState();
@@ -19,7 +19,7 @@ class LogInPageState extends State<LogInPage> {
   bool _isLoading = false;
   final logger = Logger();
 
-  void _navigateToHomePage(User user) {
+  void _navigateToHomePage(User? user) {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -41,7 +41,7 @@ class LogInPageState extends State<LogInPage> {
       );
 
       final user = userCredential.user;
-      _navigateToHomePage(user!);
+      _navigateToHomePage(user);
     } on FirebaseAuthException catch (e) {
       logger.e('Error message: $e');
     } finally {
@@ -90,6 +90,9 @@ class LogInPageState extends State<LogInPage> {
                                   labelText: 'Email',
                                   filled: true,
                                   fillColor: Colors.white,
+                                  labelStyle: TextStyle(
+                                    color: Color(0xFFE57734),
+                                  ),
                                 ),
                                 keyboardType: TextInputType.emailAddress,
                                 validator: (value) {
@@ -105,7 +108,10 @@ class LogInPageState extends State<LogInPage> {
                                 decoration: const InputDecoration(
                                     labelText: 'Password',
                                     filled: true,
-                                    fillColor: Colors.white),
+                                    fillColor: Colors.white,
+                                    labelStyle: TextStyle(
+                                      color: Color(0xFFE57734),
+                                    )),
                                 obscureText: true,
                                 validator: (value) {
                                   if (value!.isEmpty) {
@@ -115,18 +121,32 @@ class LogInPageState extends State<LogInPage> {
                                 },
                               ),
                               const SizedBox(height: 32.0, width: 32.0),
-                              ElevatedButton(
-                                onPressed: () {
-                                  if (_formKey.currentState!.validate()) {
-                                    _logInWithEmailAndPassword();
-                                  }
-                                },
-                                child: const Text('Log In'),
-                                style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                          Colors.orange),
-                                ),
+                              Column(
+                                children: [
+                                  SizedBox(height: 80),
+                                  Material(
+                                    color: Color(0xFFE57734),
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: InkWell(
+                                      onTap: () {
+                                        _logInWithEmailAndPassword();
+                                      },
+                                      child: Container(
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 15, horizontal: 50),
+                                        child: Text(
+                                          "Log In",
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 22,
+                                            fontWeight: FontWeight.bold,
+                                            letterSpacing: 1,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ],
                           ),

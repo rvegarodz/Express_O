@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/cupertino.dart';
 import 'dart:convert';
+import 'popup_menu_botton.dart';
+import 'custom_snackbar.dart';
 
 class Item {
   final String name;
@@ -61,6 +63,14 @@ class _ItemsWidgetState extends State<ItemsWidget> {
       widget.orderList.add(widget.orderItem);
       widget.updateOrderList(widget.orderList);
     });
+  void showCustomSnackBar(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return CustomSnackBar();
+      },
+    );
+
   }
 
   Future<void> loadItems() async {
@@ -83,27 +93,28 @@ class _ItemsWidgetState extends State<ItemsWidget> {
   @override
   Widget build(BuildContext context) {
     return GridView.count(
-        physics: NeverScrollableScrollPhysics(),
-        crossAxisCount: 2,
-        shrinkWrap: true,
-        childAspectRatio: (150 / 195),
-        children: [
-          for (int i = 0; i < items.length; i++)
-            Container(
-              padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-              margin: EdgeInsets.symmetric(vertical: 8, horizontal: 13),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: Color(0xFF212325),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.5),
-                    spreadRadius: 1,
-                    blurRadius: 8,
-                  ),
-                ],
-              ),
-              child: Column(children: [
+      physics: NeverScrollableScrollPhysics(),
+      crossAxisCount: 2,
+      shrinkWrap: true,
+      childAspectRatio: (150 / 195),
+      children: [
+        for (int i = 0; i < items.length; i++)
+          Container(
+            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+            margin: EdgeInsets.symmetric(vertical: 8, horizontal: 13),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: Color(0xFF212325),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.5),
+                  spreadRadius: 1,
+                  blurRadius: 8,
+                ),
+              ],
+            ),
+            child: Column(
+              children: [
                 InkWell(
                   onTap: () {
                     Navigator.push(
@@ -164,6 +175,7 @@ class _ItemsWidgetState extends State<ItemsWidget> {
                       GestureDetector(
                         onTap: () {
                           _addToOrder(items[i]); // handle button press
+                          showCustomSnackBar(context); // handle button press
                         },
                         child: Container(
                           padding: EdgeInsets.all(5),
@@ -177,12 +189,14 @@ class _ItemsWidgetState extends State<ItemsWidget> {
                             color: Colors.white,
                           ),
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
-              ]),
-            )
-        ]);
+              ],
+            ),
+          ),
+      ],
+    );
   }
 }

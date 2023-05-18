@@ -6,7 +6,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
-  final User user;
+  final User? user;
+  final List<String> orderList = [];
 
   HomeScreen({Key? key, required this.user}) : super(key: key);
 
@@ -26,7 +27,7 @@ class _HomeScreenState extends State<HomeScreen>
   void initState() {
     _tabController = TabController(length: 3, vsync: this, initialIndex: 0);
     _tabController.addListener(_handleTabSelection);
-    user = widget.user;
+    user = widget.user!;
     super.initState();
   }
 
