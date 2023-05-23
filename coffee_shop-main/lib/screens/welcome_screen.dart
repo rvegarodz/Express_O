@@ -34,7 +34,7 @@ class WelcomeScreen extends StatelessWidget {
                   children: [
                     SizedBox(height: 80),
                     Material(
-                      color: Color(0xFFE57734),
+                      color: Colors.white,
                       borderRadius: BorderRadius.circular(10),
                       child: InkWell(
                         onTap: () {
@@ -50,7 +50,7 @@ class WelcomeScreen extends StatelessWidget {
                               vertical: 15, horizontal: 50),
                           child: Text("Log In",
                               style: TextStyle(
-                                color: Colors.white,
+                                color: Color(0xFFE57734),
                                 fontSize: 22,
                                 fontWeight: FontWeight.bold,
                                 letterSpacing: 1,

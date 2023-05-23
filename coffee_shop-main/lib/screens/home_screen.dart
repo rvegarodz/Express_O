@@ -1,10 +1,12 @@
 import 'package:coffee_shop/widgets/home_bottom_bar.dart';
 import 'package:coffee_shop/widgets/items_widget.dart';
+import 'package:coffee_shop/widgets/date_time.dart';
+import 'package:coffee_shop/widgets/shopping_cart.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
-  final User user;
+  final User? user;
   final List<String> orderList = [];
 
   HomeScreen({Key? key, required this.user}) : super(key: key);
@@ -17,12 +19,15 @@ class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   late User user;
+  late int cartItemCount = 0;
+  List<dynamic> orderList = [];
+  String time = orderTime();
 
   @override
   void initState() {
     _tabController = TabController(length: 3, vsync: this, initialIndex: 0);
     _tabController.addListener(_handleTabSelection);
-    user = widget.user;
+    user = widget.user!;
     super.initState();
   }
 
@@ -36,6 +41,13 @@ class _HomeScreenState extends State<HomeScreen>
   void dispose() {
     _tabController.dispose();
     super.dispose();
+  }
+
+  void updateOrderList(List<dynamic> newOrderList) {
+    setState(() {
+      orderList = newOrderList;
+      cartItemCount = orderList.length;
+    });
   }
 
   @override
@@ -61,13 +73,8 @@ class _HomeScreenState extends State<HomeScreen>
                       ),
                     ),
                     InkWell(
-                      onTap: () {},
-                      child: Icon(
-                        Icons.shopping_cart,
-                        color: Colors.white,
-                        size: 35,
-                      ),
-                    ),
+                        onTap: () {},
+                        child: ShoppingCartWidget(cartItemCount: cartItemCount))
                   ],
                 ),
               ),
@@ -107,17 +114,19 @@ class _HomeScreenState extends State<HomeScreen>
               SizedBox(height: 10),
               Center(
                 child: [
-                  ItemsWidget(),
-                  ItemsWidget(),
-                  ItemsWidget(),
-                  ItemsWidget(),
+                  ItemsWidget(
+                    user: widget.user,
+                    orderList: orderList,
+                    updateOrderList: updateOrderList,
+                  )
                 ][_tabController.index],
               )
             ],
           ),
         ),
       ),
-      bottomNavigationBar: HomeBottomBar(),
+      bottomNavigationBar:
+          HomeBottomBar(user: user, orderList: orderList, time: time),
     );
   }
 }
