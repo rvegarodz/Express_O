@@ -1,0 +1,28 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "coffee_shop-main",
+            "cwd": "coffee_shop-main",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "coffee_shop-main (profile mode)",
+            "cwd": "coffee_shop-main",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "coffee_shop-main (release mode)",
+            "cwd": "coffee_shop-main",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}

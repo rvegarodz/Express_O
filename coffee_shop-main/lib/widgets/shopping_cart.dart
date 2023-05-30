@@ -1,3 +1,4 @@
+import 'package:coffee_shop/screens/order_screen.dart';
 import 'package:flutter/material.dart';
 
 class ShoppingCartWidget extends StatelessWidget {
@@ -44,6 +45,12 @@ class ShoppingCartWidget extends StatelessWidget {
           ],
         ),
         onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => OrderScreen(),
+            ),
+          );
           // Handle shopping cart button press
         },
       ),
