@@ -12,10 +12,10 @@ class OrderScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Order Details'),
-        backgroundColor: Colors.orange,
+        backgroundColor: Color(0xFFE57734),
         elevation: 0, // Remove app bar elevation
       ),
-      backgroundColor: Colors.white, // Set background color
+      backgroundColor: Color.fromARGB(255, 42, 45, 47), // Set background color
       body: Container(
         padding: EdgeInsets.all(16.0),
         child: Column(
@@ -26,7 +26,7 @@ class OrderScreen extends StatelessWidget {
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
-                color: Colors.black,
+                color: Colors.white,
               ),
             ),
             SizedBox(height: 24),
@@ -69,7 +69,7 @@ class OrderScreen extends StatelessWidget {
               ),
               style: ButtonStyle(
                 backgroundColor:
-                    MaterialStateProperty.all<Color>(Colors.orange),
+                    MaterialStateProperty.all<Color>(Color(0xFFE57734)),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.0),
@@ -94,7 +94,7 @@ class OrderScreen extends StatelessWidget {
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
-              color: Colors.black,
+              color: Colors.white,
             ),
           ),
           Text(
@@ -102,7 +102,7 @@ class OrderScreen extends StatelessWidget {
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
-              color: Colors.black87,
+              color: Colors.white,
             ),
           ),
         ],

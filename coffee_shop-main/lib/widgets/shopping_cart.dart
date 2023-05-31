@@ -23,8 +23,8 @@ class ShoppingCartWidget extends StatelessWidget {
                 child: Container(
                   padding: EdgeInsets.all(2),
                   decoration: BoxDecoration(
-                    color: Colors
-                        .orange, // Set the desired background color for the circular background
+                    color: Color(
+                        0xFFE57734), // Set the desired background color for the circular background
                     shape: BoxShape.circle,
                   ),
                   constraints: BoxConstraints(
@@ -45,13 +45,13 @@ class ShoppingCartWidget extends StatelessWidget {
           ],
         ),
         onPressed: () {
+          // Handle shopping cart button press
           Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => OrderScreen(),
             ),
           );
-          // Handle shopping cart button press
         },
       ),
     );
