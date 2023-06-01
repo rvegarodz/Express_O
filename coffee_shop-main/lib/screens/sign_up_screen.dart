@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:coffee_shop/screens/home_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../db/firebase_services.dart';
+
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
 
@@ -46,6 +48,7 @@ class SignUpPageState extends State<SignUpPage> {
         });
 
         if (user != null) {
+          FirebaseService.addUser(user);
           _navigateToHomePage(user);
           // Navigate to the home page or some other screen after successful sign up.
         }
