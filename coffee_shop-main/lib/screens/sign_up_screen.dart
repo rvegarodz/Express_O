@@ -158,6 +158,7 @@ class SignUpPageState extends State<SignUpPage> {
                         ),
                         Column(
                           children: [
+
                             const SizedBox(height: 16.0),
                             TextFormField(
                               decoration: const InputDecoration(
@@ -174,19 +175,64 @@ class SignUpPageState extends State<SignUpPage> {
                               },
                               onChanged: (value) {},
                             ),
-                            SizedBox(height: 80),
-                            Material(
-                              color: Color(0xFFE57734),
-                              borderRadius: BorderRadius.circular(10),
-                              child: InkWell(
+                            const SizedBox(height: 16.0),
+                            TextFormField(
+                              decoration: const InputDecoration(
+                                  labelText: 'Email',
+                                  filled: true,
+                                  fillColor: Colors.white),
+                              keyboardType: TextInputType.emailAddress,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter your email address.';
+                                }
+                                return null;
+                              },
+                              onChanged: (value) {
+                                _email = value.trim();
+                              },
+                            ),
+                            const SizedBox(height: 16.0),
+                            TextFormField(
+                              decoration: const InputDecoration(
+                                  labelText: 'Password',
+                                  filled: true,
+                                  fillColor: Colors.white),
+                              obscureText: true,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter your password.';
+                                }
+                                return null;
+                              },
+                              onChanged: (value) {
+                                _password = value.trim();
+                              },
+                            ),
+                            const SizedBox(height: 32.0, width: 32.0),
+                            ElevatedButton(
+                              onPressed: _isLoading ? null : _submitForm,
+                              child: _isLoading
+                                  ? const CircularProgressIndicator()
+                                  : const Text('Sign up'),
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        Colors.orange),
                                 onTap:
                                     _submitForm, // Call the _submitForm method here
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: 15, horizontal: 50),
-                                  child: Text(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => SignUpPage(),
+                                    ),
+                                  );
+                                },
                                     _isLoading ? 'Signing up...' : 'Sign up',
-                                    style: TextStyle(
+
+                                    "Sign Up",
+                  style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 22,
                                       fontWeight: FontWeight.bold,

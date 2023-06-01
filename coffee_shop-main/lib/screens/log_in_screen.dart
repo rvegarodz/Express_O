@@ -19,7 +19,7 @@ class LogInPageState extends State<LogInPage> {
   bool _isLoading = false;
   final logger = Logger();
 
-  void _navigateToHomePage(User user) {
+  void _navigateToHomePage(User? user) {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -41,7 +41,7 @@ class LogInPageState extends State<LogInPage> {
       );
 
       final user = userCredential.user;
-      _navigateToHomePage(user!);
+      _navigateToHomePage(user);
     } on FirebaseAuthException catch (e) {
       logger.e('Error message: $e');
     } finally {

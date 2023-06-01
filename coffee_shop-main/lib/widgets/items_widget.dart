@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/cupertino.dart';
 import 'dart:convert';
+import 'popup_menu_botton.dart';
+import 'custom_snackbar.dart';
 
 class Item {
   final String name;
@@ -62,6 +64,14 @@ class _ItemsWidgetState extends State<ItemsWidget> {
       widget.orderList.add(widget.orderItem);
       widget.updateOrderList(widget.orderList);
     });
+  void showCustomSnackBar(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return CustomSnackBar();
+      },
+    );
+
   }
 
   void showCustomSnackBar(BuildContext context) {

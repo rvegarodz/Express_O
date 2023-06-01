@@ -1,4 +1,5 @@
-import 'package:coffee_shop/screens/order_screen.dart';
+
+import 'package:coffee_shop/screens/order_screen.dart'å
 import 'package:flutter/material.dart';
 
 class CustomSnackBar extends StatefulWidget {
@@ -50,6 +51,7 @@ class _CustomSnackBarState extends State<CustomSnackBar> {
                   ),
                 ),
                 Spacer(),
+
                 if (currentStep == 2)
                   IconButton(
                     icon: Icon(Icons.check),
@@ -81,6 +83,19 @@ class _CustomSnackBarState extends State<CustomSnackBar> {
                       }
                     },
                   ),
+
+                IconButton(
+                  icon: Icon(Icons.add),
+                  onPressed: () {
+                    if (currentStep < 2) {
+                      setState(() {
+                        currentStep++;
+                      });
+                    } else {
+                      // Handle final option selection here
+                    }
+                  },
+                ),
               ],
             ),
           ),
