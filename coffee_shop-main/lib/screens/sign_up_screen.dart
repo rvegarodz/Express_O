@@ -161,7 +161,6 @@ class SignUpPageState extends State<SignUpPage> {
                         ),
                         Column(
                           children: [
-
                             const SizedBox(height: 16.0),
                             TextFormField(
                               decoration: const InputDecoration(
@@ -213,15 +212,15 @@ class SignUpPageState extends State<SignUpPage> {
                             ),
                             const SizedBox(height: 32.0, width: 32.0),
                             ElevatedButton(
-                              onPressed: _isLoading ? null : _submitForm,
-                              child: _isLoading
-                                  ? const CircularProgressIndicator()
-                                  : const Text('Sign up'),
-                              style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all<Color>(
-                                        Colors.orange),
-                              
+                                onPressed: _isLoading ? null : _submitForm,
+                                child: _isLoading
+                                    ? const CircularProgressIndicator()
+                                    : const Text('Sign up'),
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          Colors.orange),
+                                )),
                             SizedBox(height: 80),
                             Material(
                               color: Color(0xFFE57734),

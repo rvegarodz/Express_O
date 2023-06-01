@@ -5,8 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/cupertino.dart';
 import 'dart:convert';
-import 'popup_menu_botton.dart';
-import 'custom_snackbar.dart';
 
 class Item {
   final String name;
@@ -31,7 +29,7 @@ class Item {
 }
 
 class ItemsWidget extends StatefulWidget {
-  final User user;
+  final User? user;
   final List<dynamic> orderList;
   final List<dynamic> orderItem = [];
   final Function(List<dynamic>) updateOrderList;
@@ -65,14 +63,6 @@ class _ItemsWidgetState extends State<ItemsWidget> {
       widget.orderList.add(widget.orderItem);
       widget.updateOrderList(widget.orderList);
     });
-  void showCustomSnackBar(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      builder: (BuildContext context) {
-        return CustomSnackBar();
-      },
-    );
-
   }
 
   void handleOptionsSelected(List<String> selectedOptions) {
@@ -184,7 +174,7 @@ class _ItemsWidgetState extends State<ItemsWidget> {
                           showCustomSnackBar(
                               context, optionsList, handleOptionsSelected);
                           _addToOrder(items[i]); // handle button press
-                          showCustomSnackBar(context); // handle button press
+                          // handle button press
                         },
                         child: Container(
                           padding: EdgeInsets.all(5),
