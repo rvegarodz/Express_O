@@ -97,35 +97,71 @@ class SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Container(
-            padding: EdgeInsets.only(top: 100, bottom: 40),
-            decoration: BoxDecoration(
-              color: Colors.black,
-              image: DecorationImage(
-                image: AssetImage("images/Coffee1.jpg"),
-                fit: BoxFit.cover,
-                opacity: 0.6,
+      body: Container(
+        padding: EdgeInsets.only(top: 100, bottom: 40),
+        decoration: BoxDecoration(
+          color: Colors.black,
+          image: DecorationImage(
+            image: AssetImage("images/Coffee1.jpg"),
+            fit: BoxFit.cover,
+            opacity: 0.6,
+          ),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              "Sign Up",
+              style: GoogleFonts.pacifico(
+                fontSize: 50,
+                color: Colors.white,
               ),
             ),
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Sign Up",
-                    style: GoogleFonts.pacifico(
-                      fontSize: 50,
-                      color: Colors.white,
-                    ),
-                  ),
-                  Expanded(
-                      child: Center(
-                    child: SingleChildScrollView(
-                      padding: const EdgeInsets.all(16),
-                      child: Form(
-                        key: _formKey,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
+            Expanded(
+              child: Center(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.all(16),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        TextFormField(
+                          decoration: const InputDecoration(
+                              labelText: 'Email',
+                              filled: true,
+                              fillColor: Colors.white),
+                          keyboardType: TextInputType.emailAddress,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your email address.';
+                            }
+                            return null;
+                          },
+                          onChanged: (value) {
+                            _email = value.trim();
+                          },
+                        ),
+                        const SizedBox(height: 16.0),
+                        TextFormField(
+                          decoration: const InputDecoration(
+                              labelText: 'Password',
+                              filled: true,
+                              fillColor: Colors.white),
+                          obscureText: true,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your password.';
+                            }
+                            return null;
+                          },
+                          onChanged: (value) {
+                            _password = value.trim();
+                          },
+                        ),
+                        Column(
                           children: [
+
                             const SizedBox(height: 16.0),
                             TextFormField(
                               decoration: const InputDecoration(
@@ -185,13 +221,46 @@ class SignUpPageState extends State<SignUpPage> {
                                 backgroundColor:
                                     MaterialStateProperty.all<Color>(
                                         Colors.orange),
+                              
+                            SizedBox(height: 80),
+                            Material(
+                              color: Color(0xFFE57734),
+                              borderRadius: BorderRadius.circular(10),
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => SignUpPage(),
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 15, horizontal: 50),
+                                  child: Text(
+                                    "Sign Up",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.bold,
+                                      letterSpacing: 1,
+                                    ),
+                                  ),
+                                ),
                               ),
                             ),
                           ],
                         ),
-                      ),
+                      ],
                     ),
-                  ))
-                ])));
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
