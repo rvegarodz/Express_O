@@ -21,7 +21,7 @@ class WelcomeScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              "Coffee Shop",
+              "Express O'",
               style: GoogleFonts.pacifico(
                 fontSize: 50,
                 color: Colors.white,

@@ -3,8 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:coffee_shop/screens/home_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../db/firebase_services.dart';
-
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
 
@@ -48,7 +46,6 @@ class SignUpPageState extends State<SignUpPage> {
         });
 
         if (user != null) {
-          FirebaseService.addUser(user);
           _navigateToHomePage(user);
           // Navigate to the home page or some other screen after successful sign up.
         }
@@ -159,97 +156,27 @@ class SignUpPageState extends State<SignUpPage> {
                             _password = value.trim();
                           },
                         ),
-                        Column(
-                          children: [
-                            const SizedBox(height: 16.0),
-                            TextFormField(
-                              decoration: const InputDecoration(
-                                  labelText: 'Name',
-                                  filled: true,
-                                  fillColor: Colors.white),
-                              keyboardType: TextInputType.name,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter your name.';
-                                }
-                                return null;
-                              },
-                              onChanged: (value) {},
-                            ),
-                            const SizedBox(height: 16.0),
-                            TextFormField(
-                              decoration: const InputDecoration(
-                                  labelText: 'Email',
-                                  filled: true,
-                                  fillColor: Colors.white),
-                              keyboardType: TextInputType.emailAddress,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter your email address.';
-                                }
-                                return null;
-                              },
-                              onChanged: (value) {
-                                _email = value.trim();
-                              },
-                            ),
-                            const SizedBox(height: 16.0),
-                            TextFormField(
-                              decoration: const InputDecoration(
-                                  labelText: 'Password',
-                                  filled: true,
-                                  fillColor: Colors.white),
-                              obscureText: true,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter your password.';
-                                }
-                                return null;
-                              },
-                              onChanged: (value) {
-                                _password = value.trim();
-                              },
-                            ),
-                            const SizedBox(height: 32.0, width: 32.0),
-                            ElevatedButton(
-                                onPressed: _isLoading ? null : _submitForm,
-                                child: _isLoading
-                                    ? const CircularProgressIndicator()
-                                    : const Text('Sign up'),
-                                style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                          Colors.orange),
-                                )),
-                            SizedBox(height: 80),
-                            Material(
-                              color: Color(0xFFE57734),
-                              borderRadius: BorderRadius.circular(10),
-                              child: InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => SignUpPage(),
-                                    ),
-                                  );
-                                },
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: 15, horizontal: 50),
-                                  child: Text(
-                                    "Sign Up",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 22,
-                                      fontWeight: FontWeight.bold,
-                                      letterSpacing: 1,
-                                    ),
-                                  ),
+                        SizedBox(height: 80),
+                        Material(
+                          color: Color(0xFFE57734),
+                          borderRadius: BorderRadius.circular(10),
+                          child: InkWell(
+                            onTap:
+                                _submitForm, // Call the _submitForm method here
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 15, horizontal: 50),
+                              child: Text(
+                                _isLoading ? 'Signing up...' : 'Sign up',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: 1,
                                 ),
                               ),
                             ),
-                          ],
+                          ),
                         ),
                       ],
                     ),
