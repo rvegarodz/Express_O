@@ -91,7 +91,7 @@ class LogInPageState extends State<LogInPage> {
                                   filled: true,
                                   fillColor: Colors.white,
                                   labelStyle: TextStyle(
-                                    color: Color(0xFFE57734),
+                                    color: Color.fromARGB(255, 64, 61, 59),
                                   ),
                                 ),
                                 keyboardType: TextInputType.emailAddress,
@@ -110,7 +110,7 @@ class LogInPageState extends State<LogInPage> {
                                     filled: true,
                                     fillColor: Colors.white,
                                     labelStyle: TextStyle(
-                                      color: Color(0xFFE57734),
+                                      color: Color.fromARGB(255, 64, 61, 59),
                                     )),
                                 obscureText: true,
                                 validator: (value) {
