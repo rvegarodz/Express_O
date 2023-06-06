@@ -39,7 +39,8 @@ class HomeBottomBar extends StatelessWidget {
               child: InkWell(
                 onTap: () {
                   try {
-                    FirebaseService.getOrders(user.uid, time);
+                    FirebaseService.addOrders(user.uid, orderList, time);
+                    FirebaseService.fetchData(user.uid, time);
                     print(orderList);
                   } catch (e) {
                     print("Error adding orders: $e");

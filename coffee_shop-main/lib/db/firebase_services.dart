@@ -23,9 +23,10 @@ class FirebaseService {
   }
 
   static Future<void> addDescription(
-      String userId, List<dynamic> items, String time) async {
+      String userId, List<dynamic> description, String time) async {
     String docName = orderDocName(userId, time);
-    final List<dynamic> orderItems = items.map((item) => item).toList();
+    final List<dynamic> orderDescription =
+        description.map((description) => description).toList();
     final userOrdersRef =
         await FirebaseFirestore.instanceFor(app: Firebase.app())
             .collection('description');
@@ -34,28 +35,40 @@ class FirebaseService {
       'userId': userId,
       'time': time,
     });
-    for (int i = 0; i < orderItems.length; i++) {
-      myDocRef.update({'item$i': orderItems[i]});
+    for (int i = 0; i < orderDescription.length; i++) {
+      myDocRef.update({'item$i': orderDescription[i]});
     }
     ;
   }
 
-  static Future<void> getOrders(String userId, String time) async {
+  static Future<void> fetchData(String userId, String time) async {
     final docId = orderDocName(userId, time);
     final docOrderRef = await FirebaseFirestore.instanceFor(app: Firebase.app())
         .collection('orders')
-        .doc(docId);
+        .doc(docId); // instance of order collection
+    final docDescriptionRef =
+        await FirebaseFirestore.instanceFor(app: Firebase.app())
+            .collection('description')
+            .doc(docId); // instance of description collection
 
-    docOrderRef.get().then((doc) {
-      if (doc.exists) {
-        // The document exists, you can access its data using the data() method
-        print(doc.data());
+    try {
+      final docOrder = await docOrderRef.get();
+      final docDescription = await docDescriptionRef.get();
+
+      if (docOrder.exists && docDescription.exists) {
+        print("Order Document: ${docOrder.data()}");
+        print("Description Document: ${docDescription.data()}");
       } else {
-        print("Document does not exist");
+        if (!docOrder.exists) {
+          print("Order Document does not exist");
+        }
+        if (!docDescription.exists) {
+          print("Description Document does not exist");
+        }
       }
-    }).catchError((error) {
-      print("Error getting document: $error");
-    });
+    } catch (error) {
+      print("Error getting documents: $error");
+    }
   }
 
   static Future<void> addUser(User user) async {

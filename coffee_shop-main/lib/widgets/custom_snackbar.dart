@@ -4,7 +4,6 @@ import 'package:coffee_shop/db/firebase_services.dart';
 
 void handleOptionsSelected(
     User? user, List<dynamic> selectedOptions, String time) {
-  // Do something with the selected options
   FirebaseService.addDescription(user!.uid, selectedOptions, time);
   print(selectedOptions);
 }
@@ -77,8 +76,8 @@ void showCustomSnackBar(
                   ElevatedButton(
                     child: Text('Confirm'),
                     onPressed: () {
-                      Navigator.pop(context);
                       handleOptionsSelected(user, selectedOptions, time);
+                      Navigator.pop(context);
                     },
                   ),
                 ],

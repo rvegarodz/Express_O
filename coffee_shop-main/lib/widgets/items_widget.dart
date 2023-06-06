@@ -50,7 +50,7 @@ class ItemsWidget extends StatefulWidget {
 
 class _ItemsWidgetState extends State<ItemsWidget> {
   List<Item> items = [];
-  List<String> optionsList = ['Option 1', 'Option 2', 'Option 3'];
+  List<String> optionsList = ['12oz', '16oz', '20oz'];
   List<dynamic> order = [];
 
   @override
