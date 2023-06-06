@@ -22,6 +22,24 @@ class FirebaseService {
     ;
   }
 
+  static Future<void> addDescription(
+      String userId, List<dynamic> items, String time) async {
+    String docName = orderDocName(userId, time);
+    final List<dynamic> orderItems = items.map((item) => item).toList();
+    final userOrdersRef =
+        await FirebaseFirestore.instanceFor(app: Firebase.app())
+            .collection('description');
+    final myDocRef = userOrdersRef.doc(docName);
+    await myDocRef.set({
+      'userId': userId,
+      'time': time,
+    });
+    for (int i = 0; i < orderItems.length; i++) {
+      myDocRef.update({'item$i': orderItems[i]});
+    }
+    ;
+  }
+
   static Future<void> getOrders(String userId, String time) async {
     final docId = orderDocName(userId, time);
     final docOrderRef = await FirebaseFirestore.instanceFor(app: Firebase.app())

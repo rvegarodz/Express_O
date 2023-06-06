@@ -1,7 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:coffee_shop/db/firebase_services.dart';
 
-void showCustomSnackBar(BuildContext context, List<String> options,
-    Function(List<String>) onOptionsSelected) {
+void handleOptionsSelected(
+    User? user, List<dynamic> selectedOptions, String time) {
+  // Do something with the selected options
+  FirebaseService.addDescription(user!.uid, selectedOptions, time);
+  print(selectedOptions);
+}
+
+void showCustomSnackBar(
+    BuildContext context, List<String> options, User? user, String time) {
   List<String> selectedOptions = [];
 
   showModalBottomSheet(
@@ -69,7 +78,7 @@ void showCustomSnackBar(BuildContext context, List<String> options,
                     child: Text('Confirm'),
                     onPressed: () {
                       Navigator.pop(context);
-                      onOptionsSelected(selectedOptions);
+                      handleOptionsSelected(user, selectedOptions, time);
                     },
                   ),
                 ],

@@ -115,10 +115,10 @@ class _HomeScreenState extends State<HomeScreen>
               Center(
                 child: [
                   ItemsWidget(
-                    user: widget.user,
-                    orderList: orderList,
-                    updateOrderList: updateOrderList,
-                  )
+                      user: widget.user,
+                      orderList: orderList,
+                      updateOrderList: updateOrderList,
+                      time: time)
                 ][_tabController.index],
               )
             ],

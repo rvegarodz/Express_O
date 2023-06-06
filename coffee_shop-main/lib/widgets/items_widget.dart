@@ -1,6 +1,7 @@
 import 'package:coffee_shop/screens/single_item_screen.dart';
 import 'package:coffee_shop/widgets/custom_snackbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:coffee_shop/db/firebase_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/cupertino.dart';
@@ -30,6 +31,7 @@ class Item {
 
 class ItemsWidget extends StatefulWidget {
   final User? user;
+  final String time;
   final List<dynamic> orderList;
   final List<dynamic> orderItem = [];
   final Function(List<dynamic>) updateOrderList;
@@ -37,6 +39,7 @@ class ItemsWidget extends StatefulWidget {
   ItemsWidget(
       {Key? key,
       required this.user,
+      required this.time,
       required this.orderList,
       required this.updateOrderList})
       : super(key: key);
@@ -65,8 +68,10 @@ class _ItemsWidgetState extends State<ItemsWidget> {
     });
   }
 
-  void handleOptionsSelected(List<String> selectedOptions) {
+  void handleOptionsSelected(
+      User user, List<dynamic> selectedOptions, String time) {
     // Do something with the selected options
+    FirebaseService.addDescription(user.uid, selectedOptions, time);
     print(selectedOptions);
   }
 
@@ -172,7 +177,7 @@ class _ItemsWidgetState extends State<ItemsWidget> {
                       GestureDetector(
                         onTap: () {
                           showCustomSnackBar(
-                              context, optionsList, handleOptionsSelected);
+                              context, optionsList, widget.user, widget.time);
                           _addToOrder(items[i]); // handle button press
                           // handle button press
                         },
