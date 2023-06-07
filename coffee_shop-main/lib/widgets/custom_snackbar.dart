@@ -8,12 +8,12 @@ void handleOptionsSelected(
   print(selectedOptions);
 }
 
-void showCustomSnackBar(
+Future<List<dynamic>?> showCustomSnackBar(
     BuildContext context, List<List<String>> options, User? user, String time) {
   List<List<String>> selectedOptions = List.generate(options.length, (_) => []);
   int currentStep = 0;
 
-  showModalBottomSheet(
+  return showModalBottomSheet<List<dynamic>?>(
     context: context,
     builder: (BuildContext context) {
       return StatefulBuilder(
@@ -71,7 +71,7 @@ void showCustomSnackBar(
                             onPressed: () {
                               handleOptionsSelected(
                                   user, selectedOptions, time);
-                              Navigator.pop(context);
+                              Navigator.pop(context, selectedOptions);
                             },
                           ),
                       ]),
@@ -111,5 +111,7 @@ void showCustomSnackBar(
         },
       );
     },
-  );
+  ).then((value) {
+    return value; // Return the selectedOptions list
+  });
 }

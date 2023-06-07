@@ -52,8 +52,8 @@ class _ItemsWidgetState extends State<ItemsWidget> {
   List<Item> items = [];
   List<List<String>> optionsList = [
     ['12oz', '16oz', '20oz'],
-    ['Sugar1', 'Sugar 2', 'Sugar3'],
-    ['Milk1', 'Milk2', 'Milk3'],
+    ['Regular', 'Morena', 'Splenda'],
+    ['Regular', 'Avena', 'Soya'],
   ];
   List<dynamic> order = [];
 
@@ -63,12 +63,17 @@ class _ItemsWidgetState extends State<ItemsWidget> {
     loadItems();
   }
 
-  void _addToOrder(Item item) {
-    setState(() {
-      widget.orderItem.add(item.name);
-      widget.orderItem.add(item.price);
-      widget.orderList.add(widget.orderItem);
-      widget.updateOrderList(widget.orderList);
+  void _addToOrder(Item item, Future<List<dynamic>?> selectedOptionsFuture) {
+    selectedOptionsFuture.then((selectedOptions) {
+      setState(() {
+        List<dynamic> orderItem = [
+          item.name,
+          item.price,
+          ...(selectedOptions?.expand((options) => options) ?? []),
+        ];
+        widget.orderList.add(orderItem);
+        widget.updateOrderList(widget.orderList);
+      });
     });
   }
 
@@ -180,9 +185,10 @@ class _ItemsWidgetState extends State<ItemsWidget> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          showCustomSnackBar(
+                          var description = showCustomSnackBar(
                               context, optionsList, widget.user, widget.time);
-                          _addToOrder(items[i]); // handle button press
+                          _addToOrder(
+                              items[i], description); // handle button press
                           // handle button press
                         },
                         child: Container(
