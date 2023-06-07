@@ -18,6 +18,7 @@ class LogInPageState extends State<LogInPage> {
 
   bool _isLoading = false;
   final logger = Logger();
+  late ScaffoldMessengerState _scaffoldMessengerState;
 
   void _navigateToHomePage(User? user) {
     Navigator.push(
@@ -43,12 +44,30 @@ class LogInPageState extends State<LogInPage> {
       final user = userCredential.user;
       _navigateToHomePage(user);
     } on FirebaseAuthException catch (e) {
-      logger.e('Error message: $e');
+      showErrorMessage('Error message: ${e.message}');
+      logger.e('Error message: ${e.message}');
     } finally {
       setState(() {
         _isLoading = false;
       });
     }
+  }
+
+  void showErrorMessage(String message) {
+    _scaffoldMessengerState.showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: Color(0xFFE57734),
+      ),
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _scaffoldMessengerState = ScaffoldMessenger.of(context);
+    });
   }
 
   @override
@@ -77,21 +96,21 @@ class LogInPageState extends State<LogInPage> {
             Expanded(
               child: Center(
                 child: _isLoading
-                    ? const CircularProgressIndicator()
+                    ? CircularProgressIndicator()
                     : SingleChildScrollView(
-                        padding: const EdgeInsets.all(16),
+                        padding: EdgeInsets.all(16),
                         child: Form(
                           key: _formKey,
                           child: Column(
                             children: [
                               TextFormField(
                                 controller: _emailController,
-                                decoration: const InputDecoration(
+                                decoration: InputDecoration(
                                   labelText: 'Email',
                                   filled: true,
                                   fillColor: Colors.white,
                                   labelStyle: TextStyle(
-                                    color: Color.fromARGB(255, 64, 61, 59),
+                                    color: Color(0xFFE57734),
                                   ),
                                 ),
                                 keyboardType: TextInputType.emailAddress,
@@ -102,16 +121,17 @@ class LogInPageState extends State<LogInPage> {
                                   return null;
                                 },
                               ),
-                              const SizedBox(height: 16),
+                              SizedBox(height: 16),
                               TextFormField(
                                 controller: _passwordController,
-                                decoration: const InputDecoration(
-                                    labelText: 'Password',
-                                    filled: true,
-                                    fillColor: Colors.white,
-                                    labelStyle: TextStyle(
-                                      color: Color.fromARGB(255, 64, 61, 59),
-                                    )),
+                                decoration: InputDecoration(
+                                  labelText: 'Password',
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                  labelStyle: TextStyle(
+                                    color: Color(0xFFE57734),
+                                  ),
+                                ),
                                 obscureText: true,
                                 validator: (value) {
                                   if (value!.isEmpty) {
@@ -120,7 +140,7 @@ class LogInPageState extends State<LogInPage> {
                                   return null;
                                 },
                               ),
-                              const SizedBox(height: 32.0, width: 32.0),
+                              SizedBox(height: 32.0, width: 32.0),
                               Column(
                                 children: [
                                   SizedBox(height: 80),

@@ -156,7 +156,7 @@ class SignUpPageState extends State<SignUpPage> {
                             _password = value.trim();
                           },
                         ),
-                        SizedBox(height: 80),
+                        SizedBox(height: 32.0, width: 32.0),
                         Material(
                           color: Color(0xFFE57734),
                           borderRadius: BorderRadius.circular(10),
