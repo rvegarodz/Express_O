@@ -9,8 +9,8 @@ void handleOptionsSelected(
 }
 
 void showCustomSnackBar(
-    BuildContext context, List<String> options, User? user, String time) {
-  List<String> selectedOptions = [];
+    BuildContext context, List<List<String>> options, User? user, String time) {
+  List<List<String>> selectedOptions = List.generate(options.length, (_) => []);
   int currentStep = 0;
 
   showModalBottomSheet(
@@ -43,7 +43,6 @@ void showCustomSnackBar(
                                 currentStep--;
                               });
                             }
-                            // nothing yet
                           },
                         ),
                         Spacer(),
@@ -63,51 +62,49 @@ void showCustomSnackBar(
                                 setState(() {
                                   currentStep++;
                                 });
-                              } else {
-                                // Handle final option selection here
                               }
                             },
                           ),
                         if (currentStep == 2)
-                          IconButton(icon: Icon(Icons.check), onPressed: () {}),
+                          IconButton(
+                            icon: Icon(Icons.check),
+                            onPressed: () {
+                              handleOptionsSelected(
+                                  user, selectedOptions, time);
+                              Navigator.pop(context);
+                            },
+                          ),
                       ]),
                 ),
                 Divider(),
                 Expanded(
                   child: AnimatedSwitcher(
                     duration: Duration(milliseconds: 300),
+                    child: ListView(
+                      children: options[currentStep].map(
+                        (option) {
+                          return RadioListTile<String>(
+                            title: Text(option),
+                            value: option,
+                            groupValue: selectedOptions[currentStep].isNotEmpty
+                                ? selectedOptions[currentStep][0]
+                                : null,
+                            onChanged: (value) {
+                              setState(
+                                () {
+                                  selectedOptions[currentStep].clear();
+                                  selectedOptions[currentStep].add(value!);
+                                },
+                              );
+                            },
+                            activeColor: Colors.blue,
+                          );
+                        },
+                      ).toList(),
+                    ),
                   ),
                 ),
                 SizedBox(height: 8),
-                Column(
-                  children: options.map(
-                    (option) {
-                      return RadioListTile<String>(
-                        title: Text(option),
-                        value: option,
-                        groupValue: selectedOptions.isNotEmpty
-                            ? selectedOptions[0]
-                            : null,
-                        onChanged: (value) {
-                          setState(
-                            () {
-                              selectedOptions.clear();
-                              selectedOptions.add(value!);
-                            },
-                          );
-                        },
-                        activeColor: Colors.blue,
-                      );
-                    },
-                  ).toList(),
-                ),
-                ElevatedButton(
-                  child: Text('Confirm'),
-                  onPressed: () {
-                    handleOptionsSelected(user, selectedOptions, time);
-                    Navigator.pop(context);
-                  },
-                ),
               ],
             ),
           );
