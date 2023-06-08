@@ -44,9 +44,19 @@ class LogInPageState extends State<LogInPage> {
       final user = userCredential.user;
       _navigateToHomePage(user);
     } on FirebaseAuthException catch (e) {
-      showErrorMessage('${e.message}');
-      logger.e('Error message: ${e.message}');
-      print('$e.code');
+      if (e.code == 'invalid-email') {
+        showErrorMessage('The email address is badly formatted.');
+        logger.e('Error message: ${e.message}');
+      } else if (e.code == 'user-not-found') {
+        showErrorMessage('The user does not exist.');
+        logger.e('Error message: ${e.message}');
+      } else if (e.code == 'wrong-password') {
+        showErrorMessage('The password is incorrect.');
+        logger.e('Error message: ${e.message}');
+      } else {
+        showErrorMessage('Failed to Log in');
+        logger.e('Error message: ${e.message}');
+      }
     } finally {
       setState(() {
         _isLoading = false;
