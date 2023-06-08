@@ -46,6 +46,7 @@ class LogInPageState extends State<LogInPage> {
     } on FirebaseAuthException catch (e) {
       showErrorMessage('${e.message}');
       logger.e('Error message: ${e.message}');
+      print('$e.code');
     } finally {
       setState(() {
         _isLoading = false;
