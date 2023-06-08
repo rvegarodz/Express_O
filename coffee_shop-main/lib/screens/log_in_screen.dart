@@ -44,8 +44,9 @@ class LogInPageState extends State<LogInPage> {
       final user = userCredential.user;
       _navigateToHomePage(user);
     } on FirebaseAuthException catch (e) {
-      showErrorMessage('Error message: ${e.message}');
+      showErrorMessage('${e.message}');
       logger.e('Error message: ${e.message}');
+      print('$e.code');
     } finally {
       setState(() {
         _isLoading = false;
