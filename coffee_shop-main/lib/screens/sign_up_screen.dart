@@ -121,9 +121,13 @@ class SignUpPageState extends State<SignUpPage> {
                       children: [
                         TextFormField(
                           decoration: const InputDecoration(
-                              labelText: 'Email',
-                              filled: true,
-                              fillColor: Colors.white),
+                            labelText: 'Email',
+                            filled: true,
+                            fillColor: Colors.white,
+                            labelStyle: TextStyle(
+                              color: Color(0xFFE57734),
+                            ),
+                          ),
                           keyboardType: TextInputType.emailAddress,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -138,9 +142,13 @@ class SignUpPageState extends State<SignUpPage> {
                         const SizedBox(height: 16.0),
                         TextFormField(
                           decoration: const InputDecoration(
-                              labelText: 'Password',
-                              filled: true,
-                              fillColor: Colors.white),
+                            labelText: 'Password',
+                            filled: true,
+                            fillColor: Colors.white,
+                            labelStyle: TextStyle(
+                              color: Color(0xFFE57734),
+                            ),
+                          ),
                           obscureText: true,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
