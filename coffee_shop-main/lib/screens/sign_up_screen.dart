@@ -53,12 +53,13 @@ class SignUpPageState extends State<SignUpPage> {
         setState(() {
           _isLoading = false;
         });
-
+        print("$e.code");
         if (e.code == 'email-already-in-use') {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('The email address is already in use.'),
               duration: Duration(seconds: 3),
+              backgroundColor: Color(0xFFE57734),
             ),
           );
         } else if (e.code == 'weak-password') {
@@ -66,6 +67,7 @@ class SignUpPageState extends State<SignUpPage> {
             const SnackBar(
               content: Text('The password provided is too weak.'),
               duration: Duration(seconds: 3),
+              backgroundColor: Color(0xFFE57734),
             ),
           );
         } else {
@@ -73,6 +75,7 @@ class SignUpPageState extends State<SignUpPage> {
             const SnackBar(
               content: Text('Failed to sign up.'),
               duration: Duration(seconds: 3),
+              backgroundColor: Color(0xFFE57734),
             ),
           );
         }
@@ -80,13 +83,6 @@ class SignUpPageState extends State<SignUpPage> {
         setState(() {
           _isLoading = false;
         });
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Failed to sign up.'),
-            duration: Duration(seconds: 3),
-          ),
-        );
       }
     }
   }
@@ -157,26 +153,31 @@ class SignUpPageState extends State<SignUpPage> {
                           },
                         ),
                         SizedBox(height: 32.0, width: 32.0),
-                        Material(
-                          color: Color(0xFFE57734),
-                          borderRadius: BorderRadius.circular(10),
-                          child: InkWell(
-                            onTap:
-                                _submitForm, // Call the _submitForm method here
-                            child: Container(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 15, horizontal: 50),
-                              child: Text(
-                                _isLoading ? 'Signing up...' : 'Sign up',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.bold,
-                                  letterSpacing: 1,
+                        Column(
+                          children: [
+                            SizedBox(height: 80),
+                            Material(
+                              color: Color(0xFFE57734),
+                              borderRadius: BorderRadius.circular(10),
+                              child: InkWell(
+                                onTap:
+                                    _submitForm, // Call the _submitForm method here
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 15, horizontal: 50),
+                                  child: Text(
+                                    _isLoading ? 'Signing up...' : 'Sign up',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.bold,
+                                      letterSpacing: 1,
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
+                          ],
                         ),
                       ],
                     ),
