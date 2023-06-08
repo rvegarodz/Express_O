@@ -1,4 +1,5 @@
 import 'package:coffee_shop/db/firebase_services.dart';
+import 'package:coffee_shop/screens/order_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -37,10 +38,10 @@ class HomeBottomBar extends StatelessWidget {
               color: Colors.white,
               borderRadius: BorderRadius.circular(10),
               child: InkWell(
-                onTap: () {
+                onTap: () async {
                   try {
-                    FirebaseService.addOrders(user.uid, orderList, time);
-                    FirebaseService.fetchData(user.uid, time);
+                    await FirebaseService.addOrders(user.uid, orderList, time);
+                    await FirebaseService.fetchData(user.uid, time);
                     print(orderList);
                   } catch (e) {
                     print("Error adding orders: $e");
@@ -62,15 +63,21 @@ class HomeBottomBar extends StatelessWidget {
               color: Color(0xFFE57734),
               borderRadius: BorderRadius.circular(10),
               child: InkWell(
-                onTap: () {
+                onTap: () async {
                   try {
                     print(orderList);
-                    FirebaseService.addOrders(user.uid, orderList, time);
+                    await FirebaseService.addOrders(user.uid, orderList, time);
                     orderList.clear();
                     print(orderList);
                   } catch (e) {
                     print("Error adding orders: $e");
                   }
+                  ;
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              OrderScreen(user: user, time: time)));
                 },
                 child: Container(
                   padding: EdgeInsets.symmetric(vertical: 15, horizontal: 50),

@@ -6,10 +6,16 @@
     "image": "Espresso.png"
   },
   {
-    "name": "Cappuccino",
-    "description": "An espresso-based coffee drink that is traditionally prepared with equal parts double espresso, steamed milk, and milk foam.",
+    "name": "Macchiato",
+    "description": "Is a strong and bold espresso beverage, highlighted by a spot of frothed milk on top",
+    "price": 2,
+    "image": "Macchiato.png"
+  },
+  {
+    "name": "Americano",
+    "description": "A type of coffee drink prepared by diluting an espresso with hot water.",
     "price": 3,
-    "image": "Cappuccino.png"
+    "image": "Americano.png"
   },
   {
     "name": "Latte",
@@ -18,15 +24,9 @@
     "image": "latte.png"
   },
   {
-    "name": "Macchiato",
-    "description": "Is a strong and bold espresso beverage, highlighted by a spot of frothed milk on top",
-    "price": 5,
-    "image": "Macchiato.png"
-  },
-  {
-    "name": "Americano",
-    "description": "A type of coffee drink prepared by diluting an espresso with hot water.",
+    "name": "Cappuccino",
+    "description": "An espresso-based coffee drink that is traditionally prepared with equal parts double espresso, steamed milk, and milk foam.",
     "price": 3,
-    "image": "Americano.png"
+    "image": "Cappuccino.png"
   }
 ]
