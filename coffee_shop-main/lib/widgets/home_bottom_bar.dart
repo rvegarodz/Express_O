@@ -67,17 +67,16 @@ class HomeBottomBar extends StatelessWidget {
                   try {
                     print(orderList);
                     await FirebaseService.addOrders(user.uid, orderList, time);
-                    orderList.clear();
+
                     print(orderList);
                   } catch (e) {
                     print("Error adding orders: $e");
                   }
-                  ;
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) =>
-                              OrderScreen(user: user, time: time)));
+                          builder: (context) => OrderScreen(
+                              user: user, time: time, orderData: orderList)));
                 },
                 child: Container(
                   padding: EdgeInsets.symmetric(vertical: 15, horizontal: 50),

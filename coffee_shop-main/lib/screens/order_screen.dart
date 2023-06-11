@@ -1,122 +1,220 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:coffee_shop/db/firebase_services.dart';
 import 'package:flutter/material.dart';
 
 class OrderScreen extends StatelessWidget {
   final User? user;
   final String time;
+  final List<dynamic> orderData;
 
-  OrderScreen({required this.user, required this.time});
+  const OrderScreen(
+      {required this.user, required this.time, required this.orderData});
+
+  Future<int> calculateSubTotal(List<dynamic> orderData) async {
+    int subTotal = 0;
+
+    for (final itemData in orderData) {
+      final itemPrice = int.tryParse(itemData[1].toString()) ?? 0;
+      subTotal += itemPrice;
+    }
+
+    // Simulate an asynchronous operation with a delay
+    await Future.delayed(const Duration(seconds: 1));
+
+    return subTotal;
+  }
 
   @override
   Widget build(BuildContext context) {
+    const double screenPadding = 20.0;
+    const double itemPadding = 15.0;
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Order Details'),
-        backgroundColor: Color(0xFFE57734),
-        elevation: 0, // Remove app bar elevation
-      ),
-      backgroundColor: Color.fromARGB(255, 42, 45, 47), // Set background color
-      body: Container(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Order Summary',
-              style: TextStyle(
-                fontSize: 24,
+        backgroundColor: const Color.fromARGB(255, 42, 45, 47),
+        body: SafeArea(
+            child: Padding(
+          padding: EdgeInsets.only(
+            top: screenPadding,
+            left: screenPadding,
+            right: screenPadding,
+          ),
+          child: ListView(children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: itemPadding),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Icon(
+                      Icons.arrow_back,
+                      color: Colors.white.withOpacity(0.5),
+                      size: 35,
+                    ),
+                  )
+                ],
+              ),
+            ),
+            const SizedBox(height: 30),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: itemPadding),
+              child: const Text(
+                "Order Details",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 30,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: itemPadding),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 16),
+                  Container(
+                    height: 200, // Set a fixed height for the list
+                    child: ListView.builder(
+                      itemCount: orderData.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        final itemData = orderData[index];
+                        final itemName = itemData[0].toString();
+                        final itemPrice =
+                            int.tryParse(itemData[1].toString()) ?? 0;
+                        return buildOrderItem(itemName, itemPrice);
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Container(
+                    height: 100, // Set a fixed height for the list
+                    child: FutureBuilder<int>(
+                      future: calculateSubTotal(orderData),
+                      builder:
+                          (BuildContext context, AsyncSnapshot<int> snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const CircularProgressIndicator();
+                        } else if (snapshot.hasError) {
+                          return Text(
+                              'Error calculating subTotal: ${snapshot.error}');
+                        } else if (snapshot.hasData) {
+                          final subTotal = snapshot.data!;
+                          return buildOrderSubTotal(subTotal);
+                        } else {
+                          return const Text('No data available');
+                        }
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Center(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Text('Order Confirmed'),
+                              content:
+                                  const Text('Your order has been placed.'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text('OK'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                          vertical: 15,
+                          horizontal: 80,
+                        ),
+                        child: const Text(
+                          'Confirm Order',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                          const Color(0xFFE57734),
+                        ),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ]),
+        )));
+  }
+
+  Widget buildOrderItem(String itemName, int itemPrice) {
+    final int price = itemPrice;
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Expanded(
+            child: Text(
+              itemName,
+              style: const TextStyle(
+                fontSize: 18,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
               ),
             ),
-            FutureBuilder<Map<String, dynamic>?>(
-              future: FirebaseService.fetchData2(user!.uid, time),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  // While waiting for data, show a loading indicator or placeholder
-                  return CircularProgressIndicator();
-                } else if (snapshot.hasError) {
-                  // If an error occurred while fetching data, handle it accordingly
-                  return Text('Error fetching data: ${snapshot.error}');
-                } else if (snapshot.hasData) {
-                  // If data is available, build the order item widget
-                  final orderData = snapshot.data!;
-                  final itemOption = orderData['item0'][0];
-                  return buildOrderItem('Item', itemOption);
-                } else {
-                  // If no data is available, show a message or placeholder
-                  return Text('No data available');
-                }
-              },
-            ),
-            SizedBox(height: 24),
-            Spacer(), // Add spacer to push the button to the bottom
-            ElevatedButton(
-              onPressed: () {
-                // Place the logic for order confirmation here
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: Text('Order Confirmed'),
-                      content: Text('Your order has been placed.'),
-                      actions: [
-                        TextButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          child: Text('OK'),
-                        ),
-                      ],
-                    );
-                  },
-                );
-              },
-              child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 32.0),
-                child: Text(
-                  'Confirm Order',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.all<Color>(Color(0xFFE57734)),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget buildOrderItem(String title, String value) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 12.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
+          ),
           Text(
-            title,
-            style: TextStyle(
+            "\$ $price",
+            style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
               color: Colors.white,
             ),
           ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildOrderSubTotal(num subTotal) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Expanded(
+            child: Text(
+              "Subtotal",
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+          ),
           Text(
-            value,
-            style: TextStyle(
+            "\$ $subTotal",
+            style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
               color: Colors.white,
