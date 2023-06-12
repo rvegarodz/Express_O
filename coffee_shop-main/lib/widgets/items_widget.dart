@@ -1,7 +1,6 @@
 import 'package:coffee_shop/screens/single_item_screen.dart';
 import 'package:coffee_shop/widgets/custom_snackbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:coffee_shop/db/firebase_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/cupertino.dart';
@@ -51,9 +50,9 @@ class ItemsWidget extends StatefulWidget {
 class _ItemsWidgetState extends State<ItemsWidget> {
   List<Item> items = [];
   List<List<String>> optionsList = [
-    ['12oz', '16oz', '20oz'],
-    ['Regular', 'Morena', 'Splenda'],
-    ['Regular', 'Avena', 'Soya'],
+    ['4oz', '6oz', '8oz'],
+    ['White Sugar', 'Black Sugar', 'Splenda'],
+    ['Whole Milk', 'Oat Milk', 'Soy Milk'],
   ];
   List<dynamic> order = [];
 
@@ -75,13 +74,6 @@ class _ItemsWidgetState extends State<ItemsWidget> {
         widget.updateOrderList(widget.orderList);
       });
     });
-  }
-
-  void handleOptionsSelected(
-      User user, List<dynamic> selectedOptions, String time) {
-    // Do something with the selected options
-    FirebaseService.addDescription(user.uid, selectedOptions, time);
-    print(selectedOptions);
   }
 
   Future<void> loadItems() async {

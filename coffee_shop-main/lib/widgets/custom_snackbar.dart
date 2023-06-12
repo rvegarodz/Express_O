@@ -1,12 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:coffee_shop/db/firebase_services.dart';
-
-void handleOptionsSelected(
-    User? user, List<dynamic> selectedOptions, String time) {
-  FirebaseService.addDescription(user!.uid, selectedOptions, time);
-  print(selectedOptions);
-}
 
 Future<List<dynamic>?> showCustomSnackBar(
     BuildContext context, List<List<String>> options, User? user, String time) {
@@ -69,8 +62,6 @@ Future<List<dynamic>?> showCustomSnackBar(
                           IconButton(
                             icon: Icon(Icons.check),
                             onPressed: () {
-                              handleOptionsSelected(
-                                  user, selectedOptions, time);
                               Navigator.pop(context, selectedOptions);
                             },
                           ),
