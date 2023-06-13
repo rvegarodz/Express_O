@@ -75,15 +75,12 @@ class OrderScreen extends StatelessWidget {
                 children: [
                   const SizedBox(height: 16),
                   Container(
-                    height: 200, // Set a fixed height for the list
+                    height: 400, // Set a fixed height for the list
                     child: ListView.builder(
                       itemCount: orderData.length,
                       itemBuilder: (BuildContext context, int index) {
                         final itemData = orderData[index];
-                        final itemName = itemData[0].toString();
-                        final itemPrice =
-                            int.tryParse(itemData[1].toString()) ?? 0;
-                        return buildOrderItem(itemName, itemPrice);
+                        return buildOrderItem(itemData);
                       },
                     ),
                   ),
@@ -96,7 +93,13 @@ class OrderScreen extends StatelessWidget {
                           (BuildContext context, AsyncSnapshot<int> snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
-                          return const CircularProgressIndicator();
+                          return Center(
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.all(16.0), // Add padding
+                              child: CircularProgressIndicator(),
+                            ),
+                          );
                         } else if (snapshot.hasError) {
                           return Text(
                               'Error calculating subTotal: ${snapshot.error}');
@@ -166,31 +169,92 @@ class OrderScreen extends StatelessWidget {
         )));
   }
 
-  Widget buildOrderItem(String itemName, int itemPrice) {
-    final int price = itemPrice;
+  Widget buildOrderItem(List<dynamic> orderData) {
+    final String itemName = orderData[0];
+    final int itemPrice = int.tryParse(orderData[1].toString()) ?? 0;
+    final String itemSize = orderData.length > 2 ? orderData[2] : "-";
+    final String itemSugar = orderData.length > 3 ? orderData[3] : "-";
+    final String itemMilk = orderData.length > 4 ? orderData[4] : "-";
+
     return Container(
+      padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
       margin: const EdgeInsets.only(bottom: 12.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        color: Color(0xFF212325),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.5),
+            spreadRadius: 1,
+            blurRadius: 8,
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Expanded(
-            child: Text(
-              itemName,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Expanded(
+                  child: Text(
+                    itemName,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                Text(
+                  "\$ $itemPrice",
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
             ),
           ),
-          Text(
-            "\$ $price",
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Expanded(
+                  child: Text(
+                    "Size: $itemSize",
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.normal,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Text(
+                    itemSugar,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.normal,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                Text(
+                  itemMilk,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.normal,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
             ),
-          ),
+          )
         ],
       ),
     );
@@ -198,7 +262,19 @@ class OrderScreen extends StatelessWidget {
 
   Widget buildOrderSubTotal(num subTotal) {
     return Container(
+      padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
       margin: const EdgeInsets.only(bottom: 12.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        color: Color(0xFF212325),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.5),
+            spreadRadius: 1,
+            blurRadius: 8,
+          ),
+        ],
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
