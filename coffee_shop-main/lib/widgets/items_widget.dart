@@ -1,4 +1,3 @@
-import 'package:coffee_shop/screens/single_item_screen.dart';
 import 'package:coffee_shop/widgets/custom_snackbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -49,11 +48,6 @@ class ItemsWidget extends StatefulWidget {
 
 class _ItemsWidgetState extends State<ItemsWidget> {
   List<Item> items = [];
-  List<List<String>> optionsList = [
-    ['4oz', '6oz', '8oz'],
-    ['White Sugar', 'Black Sugar', 'Splenda'],
-    ['Whole Milk', 'Oat Milk', 'Soy Milk'],
-  ];
   List<dynamic> order = [];
 
   @override
@@ -118,23 +112,13 @@ class _ItemsWidgetState extends State<ItemsWidget> {
             ),
             child: Column(
               children: [
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => SingleItemScreen(item: items[i]),
-                      ),
-                    );
-                  },
-                  child: Container(
-                    margin: EdgeInsets.all(10),
-                    child: Image.asset(
-                      "images/${items[i].image}",
-                      width: 120,
-                      height: 120,
-                      fit: BoxFit.contain,
-                    ),
+                Container(
+                  margin: EdgeInsets.all(10),
+                  child: Image.asset(
+                    "images/${items[i].image}",
+                    width: 120,
+                    height: 120,
+                    fit: BoxFit.contain,
                   ),
                 ),
                 Padding(
@@ -177,10 +161,28 @@ class _ItemsWidgetState extends State<ItemsWidget> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          var description = showCustomSnackBar(
-                              context, optionsList, widget.user, widget.time);
-                          _addToOrder(
-                              items[i], description); // handle button press
+                          if (items[i].name == 'Espresso' ||
+                              items[i].name == 'Macchiato') {
+                            List<List<String>> optionsList = [
+                              ['4oz'],
+                              ['Whole Milk', 'Oat Milk', 'Soy Milk'],
+                              ['White Sugar', 'Black Sugar', 'Splenda'],
+                            ];
+                            var description = showCustomSnackBar(
+                                context, optionsList, widget.user, widget.time);
+                            _addToOrder(
+                                items[i], description); // handle button press
+                          } else {
+                            List<List<String>> optionsList = [
+                              ['6oz', '8oz'],
+                              ['Whole Milk', 'Oat Milk', 'Soy Milk'],
+                              ['White Sugar', 'Black Sugar', 'Splenda'],
+                            ];
+                            var description = showCustomSnackBar(
+                                context, optionsList, widget.user, widget.time);
+                            _addToOrder(
+                                items[i], description); // handle button press
+                          }
                           // handle button press
                         },
                         child: Container(

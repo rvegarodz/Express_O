@@ -12,7 +12,7 @@ Future<List<dynamic>?> showCustomSnackBar(
       return StatefulBuilder(
         builder: (BuildContext context, StateSetter setState) {
           return Container(
-            height: 300,
+            height: 220,
             width: double.infinity,
             decoration: BoxDecoration(
               color: Colors.white,

@@ -9,18 +9,26 @@ class OrderScreen extends StatelessWidget {
   const OrderScreen(
       {required this.user, required this.time, required this.orderData});
 
-  Future<int> calculateSubTotal(List<dynamic> orderData) async {
-    int subTotal = 0;
+  Future<List<double>> calculateSubTotal(List<dynamic> orderData) async {
+    double subTotal = 0.00;
+    double taxRate = 0.115;
+    double taxTotal = 0.00;
+    double total = 0;
 
     for (final itemData in orderData) {
       final itemPrice = int.tryParse(itemData[1].toString()) ?? 0;
       subTotal += itemPrice;
     }
+    total = subTotal + (subTotal * taxRate);
+    subTotal = double.parse(subTotal.toStringAsFixed(2));
+    total = double.parse(total.toStringAsFixed(2));
+    taxTotal = total - subTotal;
+    taxTotal = double.parse(taxTotal.toStringAsFixed(2));
 
     // Simulate an asynchronous operation with a delay
     await Future.delayed(const Duration(seconds: 1));
 
-    return subTotal;
+    return [subTotal, taxRate, taxTotal, total];
   }
 
   @override
@@ -75,28 +83,31 @@ class OrderScreen extends StatelessWidget {
                 children: [
                   const SizedBox(height: 16),
                   Container(
-                    height: 200, // Set a fixed height for the list
+                    height: 400, // Set a fixed height for the list
                     child: ListView.builder(
                       itemCount: orderData.length,
                       itemBuilder: (BuildContext context, int index) {
                         final itemData = orderData[index];
-                        final itemName = itemData[0].toString();
-                        final itemPrice =
-                            int.tryParse(itemData[1].toString()) ?? 0;
-                        return buildOrderItem(itemName, itemPrice);
+                        return buildOrderItem(itemData);
                       },
                     ),
                   ),
                   const SizedBox(height: 16),
                   Container(
-                    height: 100, // Set a fixed height for the list
-                    child: FutureBuilder<int>(
+                    height: 140, // Set a fixed height for the list
+                    child: FutureBuilder<List<double>>(
                       future: calculateSubTotal(orderData),
-                      builder:
-                          (BuildContext context, AsyncSnapshot<int> snapshot) {
+                      builder: (BuildContext context,
+                          AsyncSnapshot<List<double>> snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
-                          return const CircularProgressIndicator();
+                          return Center(
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.all(16.0), // Add padding
+                              child: CircularProgressIndicator(),
+                            ),
+                          );
                         } else if (snapshot.hasError) {
                           return Text(
                               'Error calculating subTotal: ${snapshot.error}');
@@ -166,58 +177,194 @@ class OrderScreen extends StatelessWidget {
         )));
   }
 
-  Widget buildOrderItem(String itemName, int itemPrice) {
-    final int price = itemPrice;
+  Widget buildOrderItem(List<dynamic> orderData) {
+    final String itemName = orderData[0];
+    final int itemPrice = int.tryParse(orderData[1].toString()) ?? 0;
+    final String itemSize = orderData.length > 2 ? orderData[2] : "-";
+    final String itemSugar = orderData.length > 3 ? orderData[3] : "-";
+    final String itemMilk = orderData.length > 4 ? orderData[4] : "-";
+
     return Container(
+      padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
       margin: const EdgeInsets.only(bottom: 12.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        color: Color(0xFF212325),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.5),
+            spreadRadius: 1,
+            blurRadius: 8,
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Expanded(
-            child: Text(
-              itemName,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Expanded(
+                  child: Text(
+                    itemName,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                Text(
+                  "\$ $itemPrice",
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
             ),
           ),
-          Text(
-            "\$ $price",
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Expanded(
+                  child: Text(
+                    "Size: $itemSize",
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.normal,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Text(
+                    itemSugar,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.normal,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                Text(
+                  itemMilk,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.normal,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
             ),
-          ),
+          )
         ],
       ),
     );
   }
 
-  Widget buildOrderSubTotal(num subTotal) {
+  Widget buildOrderSubTotal(List<double> subTotal) {
+    String taxRate = (subTotal[1] * 100).toStringAsFixed(1);
+
     return Container(
+      height: 300,
+      padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
       margin: const EdgeInsets.only(bottom: 12.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        color: Color(0xFF212325),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.5),
+            spreadRadius: 1,
+            blurRadius: 8,
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Expanded(
-            child: Text(
-              "Subtotal",
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Expanded(
+                  child: Text(
+                    "Subtotal",
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                Text(
+                  "\$ ${subTotal[0]}.00",
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
             ),
           ),
-          Text(
-            "\$ $subTotal",
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Expanded(
+                  child: Text(
+                    "Tax Rate ($taxRate%)",
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                Text(
+                  "\$ ${subTotal[2]}",
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Expanded(
+                  child: Text(
+                    "Total",
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                Text(
+                  "\$ ${subTotal[3]}",
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
             ),
           ),
         ],

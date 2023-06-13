@@ -5,6 +5,8 @@ import 'package:coffee_shop/widgets/shopping_cart.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../widgets/sort_rounded.dart';
+
 class HomeScreen extends StatefulWidget {
   final User? user;
   final List<String> orderList = [];
@@ -54,6 +56,7 @@ class _HomeScreenState extends State<HomeScreen>
   Widget build(BuildContext context) {
     final String? userName = user.email;
     return Scaffold(
+      drawer: MyDrawer(),
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.only(top: 15),
@@ -64,12 +67,17 @@ class _HomeScreenState extends State<HomeScreen>
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    InkWell(
-                      onTap: () {},
-                      child: Icon(
-                        Icons.sort_rounded,
-                        color: Colors.white.withOpacity(0.5),
-                        size: 35,
+                    Builder(
+                      builder: (context) => InkWell(
+                        onTap: () {
+                          Scaffold.of(context)
+                              .openDrawer(); // Here is the drawer opening action
+                        },
+                        child: Icon(
+                          Icons.sort_rounded,
+                          color: Colors.white.withOpacity(0.5),
+                          size: 35,
+                        ),
                       ),
                     ),
                     InkWell(
