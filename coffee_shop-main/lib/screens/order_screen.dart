@@ -12,6 +12,7 @@ class OrderScreen extends StatelessWidget {
   Future<List<double>> calculateSubTotal(List<dynamic> orderData) async {
     double subTotal = 0.00;
     double taxRate = 0.115;
+    double taxTotal = 0.00;
     double total = 0;
 
     for (final itemData in orderData) {
@@ -21,11 +22,13 @@ class OrderScreen extends StatelessWidget {
     total = subTotal + (subTotal * taxRate);
     subTotal = double.parse(subTotal.toStringAsFixed(2));
     total = double.parse(total.toStringAsFixed(2));
+    taxTotal = total - subTotal;
+    taxTotal = double.parse(taxTotal.toStringAsFixed(2));
 
     // Simulate an asynchronous operation with a delay
     await Future.delayed(const Duration(seconds: 1));
 
-    return [subTotal, taxRate, total];
+    return [subTotal, taxRate, taxTotal, total];
   }
 
   @override
@@ -319,7 +322,7 @@ class OrderScreen extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    "Tax Rate",
+                    "Tax Rate ($taxRate%)",
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -328,7 +331,7 @@ class OrderScreen extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  "$taxRate %",
+                  "\$ ${subTotal[2]}",
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -354,7 +357,7 @@ class OrderScreen extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  "\$ ${subTotal[2]}",
+                  "\$ ${subTotal[3]}",
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
