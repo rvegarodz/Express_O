@@ -12,7 +12,7 @@ class MyDrawer extends StatelessWidget {
             Container(
               height: 80, // Set this to whatever height you want.
               decoration: BoxDecoration(
-                color: Color(0xFFE57734),
+                color: Color(0xFF212325),
               ),
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
