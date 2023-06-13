@@ -118,23 +118,13 @@ class _ItemsWidgetState extends State<ItemsWidget> {
             ),
             child: Column(
               children: [
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => SingleItemScreen(item: items[i]),
-                      ),
-                    );
-                  },
-                  child: Container(
-                    margin: EdgeInsets.all(10),
-                    child: Image.asset(
-                      "images/${items[i].image}",
-                      width: 120,
-                      height: 120,
-                      fit: BoxFit.contain,
-                    ),
+                Container(
+                  margin: EdgeInsets.all(10),
+                  child: Image.asset(
+                    "images/${items[i].image}",
+                    width: 120,
+                    height: 120,
+                    fit: BoxFit.contain,
                   ),
                 ),
                 Padding(
