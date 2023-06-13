@@ -1,4 +1,3 @@
-import 'package:coffee_shop/screens/single_item_screen.dart';
 import 'package:coffee_shop/widgets/custom_snackbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
