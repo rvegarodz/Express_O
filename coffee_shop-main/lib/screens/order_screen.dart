@@ -9,18 +9,23 @@ class OrderScreen extends StatelessWidget {
   const OrderScreen(
       {required this.user, required this.time, required this.orderData});
 
-  Future<int> calculateSubTotal(List<dynamic> orderData) async {
-    int subTotal = 0;
+  Future<List<double>> calculateSubTotal(List<dynamic> orderData) async {
+    double subTotal = 0.00;
+    double taxRate = 0.115;
+    double total = 0;
 
     for (final itemData in orderData) {
       final itemPrice = int.tryParse(itemData[1].toString()) ?? 0;
       subTotal += itemPrice;
     }
+    total = subTotal + (subTotal * taxRate);
+    subTotal = double.parse(subTotal.toStringAsFixed(2));
+    total = double.parse(total.toStringAsFixed(2));
 
     // Simulate an asynchronous operation with a delay
     await Future.delayed(const Duration(seconds: 1));
 
-    return subTotal;
+    return [subTotal, taxRate, total];
   }
 
   @override
@@ -86,11 +91,11 @@ class OrderScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
                   Container(
-                    height: 100, // Set a fixed height for the list
-                    child: FutureBuilder<int>(
+                    height: 140, // Set a fixed height for the list
+                    child: FutureBuilder<List<double>>(
                       future: calculateSubTotal(orderData),
-                      builder:
-                          (BuildContext context, AsyncSnapshot<int> snapshot) {
+                      builder: (BuildContext context,
+                          AsyncSnapshot<List<double>> snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
                           return Center(
@@ -260,8 +265,11 @@ class OrderScreen extends StatelessWidget {
     );
   }
 
-  Widget buildOrderSubTotal(num subTotal) {
+  Widget buildOrderSubTotal(List<double> subTotal) {
+    String taxRate = (subTotal[1] * 100).toStringAsFixed(1);
+
     return Container(
+      height: 300,
       padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
       margin: const EdgeInsets.only(bottom: 12.0),
       decoration: BoxDecoration(
@@ -275,25 +283,85 @@ class OrderScreen extends StatelessWidget {
           ),
         ],
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Expanded(
-            child: Text(
-              "Subtotal",
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Expanded(
+                  child: Text(
+                    "Subtotal",
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                Text(
+                  "\$ ${subTotal[0]}.00",
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
             ),
           ),
-          Text(
-            "\$ $subTotal",
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Expanded(
+                  child: Text(
+                    "Tax Rate",
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                Text(
+                  "$taxRate %",
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Expanded(
+                  child: Text(
+                    "Total",
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                Text(
+                  "\$ ${subTotal[2]}",
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
             ),
           ),
         ],
