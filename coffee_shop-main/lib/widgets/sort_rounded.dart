@@ -1,6 +1,10 @@
+import 'package:coffee_shop/screens/welcome_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class MyDrawer extends StatelessWidget {
+  final _auth = FirebaseAuth.instance;
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -10,7 +14,7 @@ class MyDrawer extends StatelessWidget {
           padding: EdgeInsets.zero,
           children: <Widget>[
             Container(
-              height: 80, // Set this to whatever height you want.
+              height: 80,
               decoration: BoxDecoration(
                 color: Color(0xFF212325),
               ),
@@ -26,10 +30,8 @@ class MyDrawer extends StatelessWidget {
               ),
             ),
             ListTile(
-              leading: Icon(Icons.account_circle,
-                  color: Colors.white), // Set icon color
-              title: Text('Profile',
-                  style: TextStyle(color: Colors.white)), // Set text color
+              leading: Icon(Icons.account_circle, color: Colors.white),
+              title: Text('Profile', style: TextStyle(color: Colors.white)),
               onTap: () {
                 // Handle profile tap
               },
@@ -39,17 +41,17 @@ class MyDrawer extends StatelessWidget {
                   Icon(Icons.settings, color: Colors.white), // Set icon color
               title: Text('Settings',
                   style: TextStyle(color: Colors.white)), // Set text color
-              onTap: () {
-                // Handle settings tap
-              },
+              onTap: () {},
             ),
             ListTile(
-              leading:
-                  Icon(Icons.logout, color: Colors.white), // Set icon color
-              title: Text('Sign Out',
-                  style: TextStyle(color: Colors.white)), // Set text color
-              onTap: () {
+              leading: Icon(Icons.logout, color: Colors.white),
+              title: Text('Sign Out', style: TextStyle(color: Colors.white)),
+              onTap: () async {
                 // Handle sign out tap
+                await _auth.signOut();
+                Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (context) => WelcomeScreen()),
+                    (Route<dynamic> route) => false);
               },
             ),
           ],
