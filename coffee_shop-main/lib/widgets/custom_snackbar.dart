@@ -49,7 +49,7 @@ Future<List<dynamic>?> showCustomSnackBar(
                         Spacer(),
                         if (currentStep < 2)
                           IconButton(
-                            icon: Icon(Icons.add),
+                            icon: Icon(Icons.arrow_forward),
                             onPressed: () {
                               if (currentStep < 2) {
                                 setState(() {
