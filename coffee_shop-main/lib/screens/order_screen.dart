@@ -1,5 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class OrderScreen extends StatelessWidget {
   final User? user;
@@ -14,6 +15,7 @@ class OrderScreen extends StatelessWidget {
     double taxRate = 0.115;
     double taxTotal = 0.00;
     double total = 0;
+    String envPrice = '0';
 
     for (final itemData in orderData) {
       final itemPrice = int.tryParse(itemData[1].toString()) ?? 0;
@@ -24,11 +26,24 @@ class OrderScreen extends StatelessWidget {
     total = double.parse(total.toStringAsFixed(2));
     taxTotal = total - subTotal;
     taxTotal = double.parse(taxTotal.toStringAsFixed(2));
+    envPrice = total.toStringAsFixed(2).replaceAll('.', '');
+    // Call function that create a product with envPrice
 
     // Simulate an asynchronous operation with a delay
     await Future.delayed(const Duration(seconds: 1));
 
     return [subTotal, taxRate, taxTotal, total];
+  }
+
+  void paymentCheckout() async {
+    const url = 'http://localhost:4242/create-checkout-session';
+    final uri = Uri.parse(url);
+
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 
   @override
@@ -123,26 +138,7 @@ class OrderScreen extends StatelessWidget {
                   const SizedBox(height: 16),
                   Center(
                     child: ElevatedButton(
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: const Text('Order Confirmed'),
-                              content:
-                                  const Text('Your order has been placed.'),
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: const Text('OK'),
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                      },
+                      onPressed: paymentCheckout,
                       child: Padding(
                         padding: EdgeInsets.symmetric(
                           vertical: 15,

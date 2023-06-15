@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:coffee_shop/widgets/date_time.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -49,7 +51,7 @@ class FirebaseService {
         .doc(docId); // instance of order collection
 
     try {
-      final docOrder = await docOrderRef.get();
+      final docOrder = await docOrderRef.get().timeout(Duration(seconds: 10));
 
       if (docOrder.exists) {
         print("Order Document: ${docOrder.data()}");
@@ -58,10 +60,17 @@ class FirebaseService {
         print("Order Document does not exist");
         return null; // or you can return an empty map ({}) if desired
       }
+    } on TimeoutException catch (error) {
+      print("Timeout Error: ${error.message}");
+      // Handle timeout error
+    } on FirebaseException catch (error) {
+      print("Firestore Error: ${error.message}");
+      // Handle Firestore-related error
     } catch (error) {
       print("Error getting documents: $error");
       return null; // or handle the error appropriately
     }
+    return null;
   }
 
   static Future<void> addUser(User user) async {
