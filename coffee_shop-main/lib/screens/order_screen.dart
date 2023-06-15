@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:http/http.dart' as http;
 
 class OrderScreen extends StatelessWidget {
   final User? user;
@@ -27,7 +30,9 @@ class OrderScreen extends StatelessWidget {
     taxTotal = total - subTotal;
     taxTotal = double.parse(taxTotal.toStringAsFixed(2));
     envPrice = total.toStringAsFixed(2).replaceAll('.', '');
+
     // Call function that create a product with envPrice
+    makePostRequestPrice(envPrice);
 
     // Simulate an asynchronous operation with a delay
     await Future.delayed(const Duration(seconds: 1));
@@ -43,6 +48,34 @@ class OrderScreen extends StatelessWidget {
       await launchUrl(uri);
     } else {
       throw 'Could not launch $url';
+    }
+  }
+
+  // Function that create a new price for the product
+  Future<void> makePostRequestPrice(String price) async {
+    var url = Uri.parse('https://api.stripe.com/v1/prices');
+    var headers = {
+      'Authorization':
+          'Bearer sk_test_51NId2JJEeTzUc4tC79XYEn4W8WrQZcon0pIXnemXTLhsLx97E5SjKn5hmtJ931S44c3ssT4lwgG7LbU3XlAxIoDn00IsnISmFI',
+      'Content-Type': 'application/x-www-form-urlencoded'
+    };
+    var body = {
+      'unit_amount': price,
+      'currency': 'usd',
+      'product': 'prod_O4pR5OpJM2YFAn'
+    };
+
+    var response = await http.post(url, headers: headers, body: body);
+
+    if (response.statusCode == 200) {
+      // Successful POST request
+      var responseBody = jsonDecode(response.body);
+      var id = responseBody['id'];
+
+      print('Price ID: $id');
+    } else {
+      // Error handling
+      print('POST request failed with status: ${response.statusCode}');
     }
   }
 
