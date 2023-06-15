@@ -1,3 +1,4 @@
+import 'package:coffee_shop/screens/profile_screen.dart';
 import 'package:coffee_shop/screens/welcome_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +34,12 @@ class MyDrawer extends StatelessWidget {
               leading: Icon(Icons.account_circle, color: Colors.white),
               title: Text('Profile', style: TextStyle(color: Colors.white)),
               onTap: () {
-                // Handle profile tap
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          ProfileScreen(user: _auth.currentUser)),
+                ); // Handle profile tap
               },
             ),
             ListTile(
