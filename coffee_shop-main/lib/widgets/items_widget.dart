@@ -72,7 +72,7 @@ class _ItemsWidgetState extends State<ItemsWidget> {
 
   Future<void> loadItems() async {
     final jsonString =
-        await rootBundle.loadString('catalog/coffee_catalog.json');
+        await rootBundle.loadString('assets/catalog/coffee_catalog.json');
     final jsonData = json.decode(jsonString);
     List<Item> items = [];
 
