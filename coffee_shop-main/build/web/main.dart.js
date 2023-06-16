@@ -45635,7 +45635,7 @@ case 1:return A.L(q,r)}})
 return A.M($async$yb,r)},
 uG(){var s=0,r=A.N(t.z),q
 var $async$uG=A.O(function(a,b){if(a===1)return A.K(b,r)
-while(true)switch(s){case 0:q=A.lB("http://localhost:4242/create-checkout-session",0,null)
+while(true)switch(s){case 0:q=A.lB("https://frontend-v3--venerable-souffle-f3194e.netlify.app/create-checkout-session",0,null)
 s=5
 return A.Q(A.avC(q),$async$uG)
 case 5:s=b?2:4
@@ -45644,7 +45644,7 @@ case 2:s=6
 return A.Q(A.avV(q),$async$uG)
 case 6:s=3
 break
-case 4:throw A.c("Could not launch http://localhost:4242/create-checkout-session")
+case 4:throw A.c("Could not launch https://frontend-v3--venerable-souffle-f3194e.netlify.app/create-checkout-session")
 case 3:return A.L(null,r)}})
 return A.M($async$uG,r)},
 zU(a){return this.am4(a)},

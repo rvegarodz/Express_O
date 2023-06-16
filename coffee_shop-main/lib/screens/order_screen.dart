@@ -41,7 +41,8 @@ class OrderScreen extends StatelessWidget {
   }
 
   void paymentCheckout() async {
-    const url = 'http://localhost:4242/create-checkout-session';
+    const url =
+        'https://frontend-v3--venerable-souffle-f3194e.netlify.app/create-checkout-session';
     final uri = Uri.parse(url);
 
     if (await canLaunchUrl(uri)) {
@@ -71,7 +72,33 @@ class OrderScreen extends StatelessWidget {
       // Successful POST request
       var responseBody = jsonDecode(response.body);
       var id = responseBody['id'];
+      print('Price ID: $id');
+    } else {
+      // Error handling
+      print('POST request failed with status: ${response.statusCode}');
+    }
+  }
 
+  // Function that create a new price for the product
+  Future<void> updatePriceEnv(String price) async {
+    var url = Uri.parse('https://api.netlify.com/api/v1/');
+    var headers = {
+      'Authorization':
+          'Bearer sk_test_51NId2JJEeTzUc4tC79XYEn4W8WrQZcon0pIXnemXTLhsLx97E5SjKn5hmtJ931S44c3ssT4lwgG7LbU3XlAxIoDn00IsnISmFI',
+      'Content-Type': 'application/x-www-form-urlencoded'
+    };
+    var body = {
+      'unit_amount': price,
+      'currency': 'usd',
+      'product': 'prod_O4pR5OpJM2YFAn'
+    };
+
+    var response = await http.post(url, headers: headers, body: body);
+
+    if (response.statusCode == 200) {
+      // Successful POST request
+      var responseBody = jsonDecode(response.body);
+      var id = responseBody['id'];
       print('Price ID: $id');
     } else {
       // Error handling
