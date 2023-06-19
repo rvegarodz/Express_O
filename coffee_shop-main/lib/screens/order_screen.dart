@@ -42,7 +42,7 @@ class OrderScreen extends StatelessWidget {
 
   void paymentCheckout() async {
     const url =
-        'https://frontend-v3--venerable-souffle-f3194e.netlify.app/create-checkout-session';
+        'http://frontend-v3--venerable-souffle-f3194e.netlify.app/create-checkout-session';
     final uri = Uri.parse(url);
 
     if (await canLaunchUrl(uri)) {
