@@ -71,8 +71,7 @@ class _HomeScreenState extends State<HomeScreen>
                     Builder(
                       builder: (context) => InkWell(
                         onTap: () {
-                          Scaffold.of(context)
-                              .openDrawer(); // Here is the drawer opening action
+                          Scaffold.of(context).openDrawer();
                         },
                         child: Icon(
                           Icons.sort_rounded,
@@ -116,8 +115,6 @@ class _HomeScreenState extends State<HomeScreen>
                 labelPadding: EdgeInsets.symmetric(horizontal: 20),
                 tabs: [
                   Tab(text: "Coffee"),
-                  Tab(text: "Drinks"),
-                  Tab(text: "Food"),
                 ],
               ),
               SizedBox(height: 10),

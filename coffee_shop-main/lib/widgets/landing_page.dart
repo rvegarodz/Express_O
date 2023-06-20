@@ -7,8 +7,7 @@ class LandingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
-    final isLargeScreen =
-        screenSize.width > 600; // Adjust the threshold as needed
+    final isLargeScreen = screenSize.width > 600;
 
     final welcomeFontSize = isLargeScreen ? 40.0 : 25.0;
     final descriptionFontSize = isLargeScreen ? 16.0 : 12.0;
@@ -23,10 +22,7 @@ class LandingPage extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(
-                    height: MediaQuery.of(context)
-                        .padding
-                        .top), // Adjust for status bar
+                SizedBox(height: MediaQuery.of(context).padding.top),
                 Align(
                   alignment: Alignment.topCenter,
                   child: Text(
@@ -174,7 +170,7 @@ class LandingPage extends StatelessWidget {
           ),
         ),
         SizedBox(height: 8),
-        Row(
+        Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             GestureDetector(
@@ -186,9 +182,18 @@ class LandingPage extends StatelessWidget {
                   throw 'Could not launch $linkedinUrl';
                 }
               },
-              child: Icon(
-                Icons.link, // Linkedin
-                color: Colors.white,
+              child: Column(
+                children: [
+                  Icon(
+                    Icons.link, // Linkedin
+                    color: Colors.white,
+                  ),
+                  SizedBox(height: 4),
+                  Text(
+                    "LinkedIn",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ],
               ),
             ),
             SizedBox(width: 8), // Space between icons
@@ -201,9 +206,18 @@ class LandingPage extends StatelessWidget {
                   throw 'Could not launch $githubUrl';
                 }
               },
-              child: Icon(
-                Icons.link, // github
-                color: Colors.white,
+              child: Column(
+                children: [
+                  Icon(
+                    Icons.link, // github
+                    color: Colors.white,
+                  ),
+                  SizedBox(height: 4),
+                  Text(
+                    "GitHub",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ],
               ),
             ),
           ],
