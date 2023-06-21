@@ -28,7 +28,7 @@ class _HomeScreenState extends State<HomeScreen>
 
   @override
   void initState() {
-    _tabController = TabController(length: 3, vsync: this, initialIndex: 0);
+    _tabController = TabController(length: 1, vsync: this, initialIndex: 0);
     _tabController.addListener(_handleTabSelection);
     user = widget.user!;
     super.initState();
