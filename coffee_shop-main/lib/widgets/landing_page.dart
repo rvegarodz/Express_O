@@ -6,12 +6,12 @@ import 'package:carousel_slider/carousel_slider.dart';
 
 class LandingPage extends StatelessWidget {
   final List<String> imageUrls = [
-    'images/welcome.jpg',
-    'images/SingUp.jpg',
-    'images/LogIn.jpg',
-    'images/Item.jpg',
-    'images/Snackbar.jpg',
-    'images/Orders.jpg',
+    'images/welcome.jpeg',
+    'images/SingUp.jpeg',
+    'images/LogIn.jpeg',
+    'images/Item.jpeg',
+    'images/Snackbar.jpeg',
+    'images/Orders.jpeg',
   ];
 
   @override
