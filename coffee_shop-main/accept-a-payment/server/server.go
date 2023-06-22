@@ -16,20 +16,13 @@ import (
 func main() {
 	stripe.Key = os.Getenv("STRIPE_SECRET_KEY")
 
-	// For sample support and debugging, not required for production:
-	stripe.SetAppInfo(&stripe.AppInfo{
-		Name:    "stripe-samples/accept-a-payment/payment-element",
-		Version: "0.0.1",
-		URL:     "https://github.com/stripe-samples",
-	})
-
 	http.Handle("/", http.FileServer(http.Dir(os.Getenv("STATIC_DIR"))))
 	http.HandleFunc("/config", handleConfig)
 	http.HandleFunc("/create-payment-intent", handleCreatePaymentIntent)
 	http.HandleFunc("/webhook", handleWebhook)
 
-	log.Println("Server running at http://localhost:4242")
-	err = http.ListenAndServe("0.0.0.0:4242", enableCors(http.DefaultServeMux))
+	log.Println("Server running...")
+	err := http.ListenAndServe(":"+os.Getenv("PORT"), enableCors(http.DefaultServeMux))
 	if err != nil {
 		log.Fatal("Server failed to start: ", err)
 	}
