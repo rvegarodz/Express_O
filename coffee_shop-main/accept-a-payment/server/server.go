@@ -16,6 +16,12 @@ import (
 func main() {
 	stripe.Key = os.Getenv("STRIPE_SECRET_KEY")
 
+	stripe.SetAppInfo(&stripe.AppInfo{
+		Name:    "stripe-samples/accept-a-payment/payment-element",
+		Version: "0.0.1",
+		URL:     "https://github.com/stripe-samples",
+	})
+
 	http.Handle("/", http.FileServer(http.Dir(os.Getenv("STATIC_DIR"))))
 	http.HandleFunc("/config", handleConfig)
 	http.HandleFunc("/create-payment-intent", handleCreatePaymentIntent)
