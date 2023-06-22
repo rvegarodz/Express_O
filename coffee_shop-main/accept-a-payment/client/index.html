@@ -4,38 +4,36 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Stripe Checkout Sample</title>
+    <title>Payment</title>
 
-    <link rel="icon" href="favicon.ico" type="image/x-icon" />
-    <link rel="stylesheet" href="css/normalize.css" />
-    <link rel="stylesheet" href="css/global.css" />
+    <link rel="stylesheet" href="/css/base.css" />
     <script src="https://js.stripe.com/v3/"></script>
+
+    <script src="/utils.js" defer></script>
+    <script src="/index.js" defer></script>
   </head>
-
   <body>
-    <div class="sr-root">
-      <div class="sr-main">
-        <section class="container">
-          <div>
-            <h1>Single photo</h1>
-            <h4>Purchase a Pasha original photo</h4>
+    <main>
+      <h1>Payment</h1>
 
-            <div class="pasha-image">
-              <img
-                src="https://picsum.photos/280/320?random=4"
-                width="140"
-                height="160"
-                />
-            </div>
-          </div>
+      <p>Enable more payment method types <a
+        href="https://dashboard.stripe.com/settings/payment_methods" target="_blank">in your
+        dashboard</a>.</p>
 
-          <form action="/create-checkout-session" method="POST">
-            <button id="submit">Buy</button>
-          </form>
-        </section>
+      <form id="payment-form">
+        <div id="link-authentication-element">
+          <!-- Elements will create authentication element here -->
+        </div>
+        <div id="payment-element">
+          <!-- Elements will create form elements here -->
+        </div>
+        <button id="submit">Pay now</button>
+        <div id="error-message">
+          <!-- Display error message to your customers here -->
+        </div>
+      </form>
 
-        <div id="error-message"></div>
-      </div>
-    </div>
+      <div id="messages" role="alert" style="display: none;"></div>
+    </main>
   </body>
 </html>

@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -13,26 +12,25 @@ class OrderScreen extends StatelessWidget {
   const OrderScreen(
       {required this.user, required this.time, required this.orderData});
 
+  /// FUNCTION THAT CALCULATE VALUES FOR THE BUILDER
   Future<List<double>> calculateSubTotal(List<dynamic> orderData) async {
     double subTotal = 0.00;
     double taxRate = 0.115;
     double taxTotal = 0.00;
     double total = 0;
-    String envPrice = '0';
 
+    // Iteration through order for calculate subTotal
     for (final itemData in orderData) {
       final itemPrice = int.tryParse(itemData[1].toString()) ?? 0;
       subTotal += itemPrice;
     }
+
+    // Calculate and format values to return
     total = subTotal + (subTotal * taxRate);
     subTotal = double.parse(subTotal.toStringAsFixed(2));
     total = double.parse(total.toStringAsFixed(2));
     taxTotal = total - subTotal;
     taxTotal = double.parse(taxTotal.toStringAsFixed(2));
-    envPrice = total.toStringAsFixed(2).replaceAll('.', '');
-
-    // Call function that create a product with envPrice
-    makePostRequestPrice(envPrice);
 
     // Simulate an asynchronous operation with a delay
     await Future.delayed(const Duration(seconds: 1));
@@ -40,69 +38,46 @@ class OrderScreen extends StatelessWidget {
     return [subTotal, taxRate, taxTotal, total];
   }
 
-  void paymentCheckout() async {
-    const url =
-        'http://frontend-v3--venerable-souffle-f3194e.netlify.app/create-checkout-session';
-    final uri = Uri.parse(url);
+  /// Function that format total for createPaymentIntentAndRedirect()
+  int formatTotal(double total) {
+    // Multiply by 100 and round to the nearest whole number
+    int totalInteger = (total * 100).round();
 
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri);
-    } else {
-      throw 'Could not launch $url';
+    // Check if the total has three digits
+    if (totalInteger >= 100 && totalInteger < 1000) {
+      // Add a leading zero
+      totalInteger = int.parse('0${totalInteger}');
     }
+
+    // Return the formatted total
+    return totalInteger;
   }
 
-  // Function that create a new price for the product
-  Future<void> makePostRequestPrice(String price) async {
-    var url = Uri.parse('https://api.stripe.com/v1/prices');
-    var headers = {
-      'Authorization':
-          'Bearer sk_test_51NId2JJEeTzUc4tC79XYEn4W8WrQZcon0pIXnemXTLhsLx97E5SjKn5hmtJ931S44c3ssT4lwgG7LbU3XlAxIoDn00IsnISmFI',
-      'Content-Type': 'application/x-www-form-urlencoded'
-    };
-    var body = {
-      'unit_amount': price,
-      'currency': 'usd',
-      'product': 'prod_O4pR5OpJM2YFAn'
+  /// Function that make a POST request before launching new tab
+  Future<void> createPaymentIntentAndRedirect(int total) async {
+    final urlPost = Uri.parse('http://localhost:4242/create-payment-intent');
+    final urlPayment = Uri.parse('http://localhost:4242/');
+    final payload = {
+      'amount': total,
+      'currency': 'USD',
     };
 
-    var response = await http.post(url, headers: headers, body: body);
+    // POST request to stripe
+    final response = await http.post(
+      urlPost,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: json.encode(payload),
+    );
 
+    // Verifying POST Status
+    print('Response status code: ${response.statusCode}');
     if (response.statusCode == 200) {
-      // Successful POST request
-      var responseBody = jsonDecode(response.body);
-      var id = responseBody['id'];
-      print('Price ID: $id');
+      // Launch the payment URL in new tab
+      await launchUrl(urlPayment);
     } else {
-      // Error handling
-      print('POST request failed with status: ${response.statusCode}');
-    }
-  }
-
-  // Function that create a new price for the product
-  Future<void> updatePriceEnv(String price) async {
-    var url = Uri.parse('https://api.netlify.com/api/v1/');
-    var headers = {
-      'Authorization':
-          'Bearer sk_test_51NId2JJEeTzUc4tC79XYEn4W8WrQZcon0pIXnemXTLhsLx97E5SjKn5hmtJ931S44c3ssT4lwgG7LbU3XlAxIoDn00IsnISmFI',
-      'Content-Type': 'application/x-www-form-urlencoded'
-    };
-    var body = {
-      'unit_amount': price,
-      'currency': 'usd',
-      'product': 'prod_O4pR5OpJM2YFAn'
-    };
-
-    var response = await http.post(url, headers: headers, body: body);
-
-    if (response.statusCode == 200) {
-      // Successful POST request
-      var responseBody = jsonDecode(response.body);
-      var id = responseBody['id'];
-      print('Price ID: $id');
-    } else {
-      // Error handling
-      print('POST request failed with status: ${response.statusCode}');
+      throw Exception('Failed to create payment intent');
     }
   }
 
@@ -110,6 +85,7 @@ class OrderScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     const double screenPadding = 20.0;
     const double itemPadding = 15.0;
+    Future<List<double>> orderList = calculateSubTotal(orderData);
 
     return Scaffold(
         backgroundColor: const Color.fromARGB(255, 42, 45, 47),
@@ -198,7 +174,12 @@ class OrderScreen extends StatelessWidget {
                   const SizedBox(height: 16),
                   Center(
                     child: ElevatedButton(
-                      onPressed: paymentCheckout,
+                      onPressed: () async {
+                        final totalDouble = await orderList;
+                        final totalStr = formatTotal(totalDouble[3]);
+                        print(totalStr);
+                        await createPaymentIntentAndRedirect(totalStr);
+                      },
                       child: Padding(
                         padding: EdgeInsets.symmetric(
                           vertical: 15,
@@ -273,7 +254,7 @@ class OrderScreen extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  "\$ $itemPrice",
+                  "\$ ${itemPrice}.00",
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
