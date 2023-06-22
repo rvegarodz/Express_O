@@ -56,9 +56,9 @@ class OrderScreen extends StatelessWidget {
   /// Function that make a POST request before launching new tab
   Future<void> createPaymentIntentAndRedirect(int total) async {
     final urlPost = Uri.parse(
-        'https://wondrous-profiterole-f56042.netlify.app/create-payment-intent');
-    final urlPayment =
-        Uri.parse('https://wondrous-profiterole-f56042.netlify.app/');
+        'https://6494705f83840b473c666241--wondrous-profiterole-f56042.netlify.app/create-payment-intent');
+    final urlPayment = Uri.parse(
+        'https://6494705f83840b473c666241--wondrous-profiterole-f56042.netlify.app/');
     final payload = {
       'amount': total,
       'currency': 'USD',
