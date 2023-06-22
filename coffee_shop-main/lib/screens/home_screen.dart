@@ -1,5 +1,6 @@
-import 'package:coffee_shop/widgets/home_bottom_bar.dart';
 import 'package:coffee_shop/widgets/items_widget.dart';
+import 'package:coffee_shop/widgets/home_bottom_bar.dart';
+
 import 'package:coffee_shop/widgets/date_time.dart';
 import 'package:coffee_shop/widgets/shopping_cart.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -28,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen>
 
   @override
   void initState() {
-    _tabController = TabController(length: 3, vsync: this, initialIndex: 0);
+    _tabController = TabController(length: 1, vsync: this, initialIndex: 0);
     _tabController.addListener(_handleTabSelection);
     user = widget.user!;
     super.initState();
@@ -71,8 +72,7 @@ class _HomeScreenState extends State<HomeScreen>
                     Builder(
                       builder: (context) => InkWell(
                         onTap: () {
-                          Scaffold.of(context)
-                              .openDrawer(); // Here is the drawer opening action
+                          Scaffold.of(context).openDrawer();
                         },
                         child: Icon(
                           Icons.sort_rounded,
@@ -116,8 +116,6 @@ class _HomeScreenState extends State<HomeScreen>
                 labelPadding: EdgeInsets.symmetric(horizontal: 20),
                 tabs: [
                   Tab(text: "Coffee"),
-                  Tab(text: "Drinks"),
-                  Tab(text: "Food"),
                 ],
               ),
               SizedBox(height: 10),
