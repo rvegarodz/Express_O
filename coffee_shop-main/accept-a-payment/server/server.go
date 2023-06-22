@@ -22,7 +22,7 @@ func main() {
 		URL:     "https://github.com/stripe-samples",
 	})
 
-	http.Handle("/", http.FileServer(http.Dir(os.Getenv("public"))))
+	http.Handle("/", http.FileServer(http.Dir(os.Getenv("public/index.html"))))
 	http.HandleFunc("/config", handleConfig)
 	http.HandleFunc("/create-payment-intent", handleCreatePaymentIntent)
 	http.HandleFunc("/webhook", handleWebhook)
