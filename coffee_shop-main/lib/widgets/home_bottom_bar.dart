@@ -52,6 +52,7 @@ class HomeBottomBar extends StatelessWidget {
                       user: user,
                       time: time,
                       orderData: orderList,
+                      orderList: [],
                     ),
                   ),
                 );
