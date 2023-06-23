@@ -10,7 +10,10 @@ class OrderScreen extends StatelessWidget {
   final List<dynamic> orderData;
 
   const OrderScreen(
-      {required this.user, required this.time, required this.orderData});
+      {required this.user,
+      required this.time,
+      required this.orderData,
+      required List orderList});
 
   /// FUNCTION THAT CALCULATE VALUES FOR THE BUILDER
   Future<List<double>> calculateSubTotal(List<dynamic> orderData) async {

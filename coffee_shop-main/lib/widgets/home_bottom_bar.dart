@@ -50,7 +50,11 @@ class HomeBottomBar extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                           builder: (context) => OrderScreen(
-                              user: user, time: time, orderData: orderList)));
+                                user: user,
+                                time: time,
+                                orderData: orderList,
+                                orderList: [],
+                              )));
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
