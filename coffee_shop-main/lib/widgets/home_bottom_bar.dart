@@ -45,17 +45,24 @@ class HomeBottomBar extends StatelessWidget {
                 } catch (e) {
                   print("Error adding orders: $e");
                 }
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => OrderScreen(
-                      user: user,
-                      time: time,
-                      orderData: orderList,
-                      orderList: [],
+                if (orderList.isNotEmpty) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => OrderScreen(
+                                user: user,
+                                time: time,
+                                orderData: orderList,
+                                orderList: [],
+                              )));
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('No items selected.'),
+                      backgroundColor: Color(0xFFE57734),
                     ),
-                  ),
-                );
+                  );
+                }
               },
               child: Container(
                 padding: EdgeInsets.symmetric(vertical: 15, horizontal: 50),

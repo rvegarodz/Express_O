@@ -1,44 +1,37 @@
 package main
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
-	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
 
-	"github.com/joho/godotenv"
 	"github.com/stripe/stripe-go/v72"
-	"github.com/stripe/stripe-go/v72/checkout/session"
+	"github.com/stripe/stripe-go/v72/paymentintent"
 	"github.com/stripe/stripe-go/v72/webhook"
 )
 
 func main() {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
-	checkEnv()
-
 	stripe.Key = os.Getenv("STRIPE_SECRET_KEY")
 
-	// For sample support and debugging, not required for production:
 	stripe.SetAppInfo(&stripe.AppInfo{
-		Name:    "stripe-samples/accept-a-payment/prebuilt-checkout-page",
+		Name:    "stripe-samples/accept-a-payment/payment-element",
 		Version: "0.0.1",
 		URL:     "https://github.com/stripe-samples",
 	})
 
 	http.Handle("/", http.FileServer(http.Dir(os.Getenv("STATIC_DIR"))))
-	http.HandleFunc("/checkout-session", handleCheckoutSession)
-	http.HandleFunc("/create-checkout-session", handleCreateCheckoutSession)
+	http.HandleFunc("/config", handleConfig)
+	http.HandleFunc("/create-payment-intent", handleCreatePaymentIntent)
 	http.HandleFunc("/webhook", handleWebhook)
 
-	log.Println("server running at 0.0.0.0:4242")
-	http.ListenAndServe("0.0.0.0:4242", nil)
+	log.Println("Server running...")
+	err := http.ListenAndServe(":"+os.Getenv("PORT"), enableCors(http.DefaultServeMux))
+	if err != nil {
+		log.Fatal("Server failed to start: ", err)
+	}
 }
 
 // ErrorResponseMessage represents the structure of the error
@@ -53,59 +46,93 @@ type ErrorResponse struct {
 	Error *ErrorResponseMessage `json:"error"`
 }
 
-func handleCheckoutSession(w http.ResponseWriter, r *http.Request) {
-	if r.Method != "GET" {
+func enableCors(handler http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
+		handler.ServeHTTP(w, r)
+	})
+}
+
+func handleConfig(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
 		http.Error(w, http.StatusText(http.StatusMethodNotAllowed), http.StatusMethodNotAllowed)
 		return
 	}
-	sessionID := r.URL.Query().Get("sessionId")
-	s, _ := session.Get(sessionID, nil)
-	writeJSON(w, s)
+
+	writeJSON(w, map[string]interface{}{
+		"publishableKey": os.Getenv("STRIPE_PUBLISHABLE_KEY"),
+	})
 }
 
-func handleCreateCheckoutSession(w http.ResponseWriter, r *http.Request) {
-	domainURL := os.Getenv("DOMAIN")
+var clientSecret string
+var paymentURL string
 
-	// Pulls the list of payment method types from environment variables (`.env`).
-	// In practice, users often hard code the list of strings.
-
-	// Create new Checkout Session for the order
-	// Other optional params include:
-	// [billing_address_collection] - to display billing address details on the page
-	// [customer] - if you have an existing Stripe Customer ID
-	// [payment_intent_data] - lets capture the payment later
-	// [customer_email] - lets you prefill the email input in the form
-	// [automatic_tax] - to automatically calculate sales tax, VAT and GST in the checkout page
-	// For full details see https://stripe.com/docs/api/checkout/sessions/create
-
-	// ?session_id={CHECKOUT_SESSION_ID} means the redirect will have the session ID
-	// set as a query param
-	params := &stripe.CheckoutSessionParams{
-		SuccessURL:         stripe.String(domainURL + "/success.html?session_id={CHECKOUT_SESSION_ID}"),
-		CancelURL:          stripe.String(domainURL + "/canceled.html"),
-		Mode:               stripe.String(string(stripe.CheckoutSessionModePayment)),
-		LineItems: []*stripe.CheckoutSessionLineItemParams{
-			{
-				Quantity: stripe.Int64(1),
-				Price:    stripe.String(os.Getenv("PRICE")),
-			},
-		},
-		// AutomaticTax: &stripe.CheckoutSessionAutomaticTaxParams{Enabled: stripe.Bool(true)},
-	}
-	s, err := session.New(params)
-	if err != nil {
-		http.Error(w, fmt.Sprintf("error while creating session %v", err.Error()), http.StatusInternalServerError)
+func handleCreatePaymentIntent(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodOptions {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 		return
 	}
 
-	http.Redirect(w, r, s.URL, http.StatusSeeOther)
+	if r.Method == http.MethodGet {
+		writeJSON(w, map[string]interface{}{
+			"publishableKey": os.Getenv("STRIPE_PUBLISHABLE_KEY"),
+			"clientSecret":   clientSecret,
+			"paymentURL":     paymentURL,
+		})
+		return
+	}
+
+	if r.Method != http.MethodPost {
+		http.Error(w, http.StatusText(http.StatusMethodNotAllowed), http.StatusMethodNotAllowed)
+		return
+	}
+
+	var paymentDetails struct {
+		Amount   int64  `json:"amount"`
+		Currency string `json:"currency"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&paymentDetails); err != nil {
+		http.Error(w, "Invalid payment details", http.StatusBadRequest)
+		return
+	}
+
+	params := &stripe.PaymentIntentParams{
+		Amount:   stripe.Int64(paymentDetails.Amount),
+		Currency: stripe.String(paymentDetails.Currency),
+		AutomaticPaymentMethods: &stripe.PaymentIntentAutomaticPaymentMethodsParams{
+			Enabled: stripe.Bool(true),
+		},
+	}
+
+	pi, err := paymentintent.New(params)
+	if err != nil {
+		http.Error(w, "Failed to create payment intent", http.StatusInternalServerError)
+		return
+	}
+
+	paymentURL = fmt.Sprintf("https://your-website.com/payments/%s", pi.ID)
+	clientSecret = pi.ClientSecret
+
+	writeJSON(w, map[string]interface{}{
+		"clientSecret": pi.ClientSecret,
+		"paymentURL":   paymentURL,
+	})
 }
 
 func handleWebhook(w http.ResponseWriter, r *http.Request) {
-	if r.Method != "POST" {
+	if r.Method != http.MethodPost {
 		http.Error(w, http.StatusText(http.StatusMethodNotAllowed), http.StatusMethodNotAllowed)
 		return
 	}
+
+	const MaxRequestBodySize = 65536 // 64KB
+	r.Body = http.MaxBytesReader(w, r.Body, MaxRequestBodySize)
+
 	b, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
@@ -122,54 +149,15 @@ func handleWebhook(w http.ResponseWriter, r *http.Request) {
 
 	if event.Type == "checkout.session.completed" {
 		fmt.Println("Checkout Session completed!")
-		// Note: If you need access to the line items, for instance to
-		// automate fullfillment based on the the ID of the Price, you'll
-		// need to refetch the Checkout Session here, and expand the line items:
-		//
-		// params := &stripe.CheckoutSessionParams{}
-		// params.AddExpand("line_items")
-		// s, _ := session.Get("cs_test_...", params)
-		// lineItems := s.LineItems
-		//
-		// Read more about expand here: https://stripe.com/docs/expand
-
 	}
 
 	writeJSON(w, nil)
 }
 
 func writeJSON(w http.ResponseWriter, v interface{}) {
-	var buf bytes.Buffer
-	if err := json.NewEncoder(&buf).Encode(v); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		log.Printf("json.NewEncoder.Encode: %v", err)
-		return
-	}
 	w.Header().Set("Content-Type", "application/json")
-	if _, err := io.Copy(w, &buf); err != nil {
-		log.Printf("io.Copy: %v", err)
-		return
-	}
-}
-
-func writeJSONError(w http.ResponseWriter, v interface{}, code int) {
-	w.WriteHeader(code)
-	writeJSON(w, v)
-	return
-}
-
-func writeJSONErrorMessage(w http.ResponseWriter, message string, code int) {
-	resp := &ErrorResponse{
-		Error: &ErrorResponseMessage{
-			Message: message,
-		},
-	}
-	writeJSONError(w, resp, code)
-}
-
-func checkEnv() {
-	price := os.Getenv("PRICE")
-	if price == "price_12345" || price == "" {
-		log.Fatal("You must set a Price ID from your Stripe account. See the README for instructions.")
+	if err := json.NewEncoder(w).Encode(v); err != nil {
+		log.Printf("json.NewEncoder.Encode: %v", err)
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
 	}
 }
