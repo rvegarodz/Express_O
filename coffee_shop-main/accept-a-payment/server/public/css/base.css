@@ -1,9 +1,9 @@
 @import url('https://fonts.googleapis.com/css?family=Raleway&display=swap');
 
 :root {
-  --light-grey: #F6F9FC;
-  --dark-terminal-color: #0A2540;
-  --accent-color: #635BFF;
+  --light-grey: #2A2D2F;
+  --dark-terminal-color: #FFFF;
+  --accent-color: #E57734;
   --radius: 3px;
 }
 
