@@ -93,7 +93,7 @@ class _ItemsWidgetState extends State<ItemsWidget> {
       physics: NeverScrollableScrollPhysics(),
       crossAxisCount: 2,
       shrinkWrap: true,
-      childAspectRatio: (1 / 2),
+      childAspectRatio: (1 / 1.5),
       children: [
         for (int i = 0; i < items.length; i++)
           Container(
