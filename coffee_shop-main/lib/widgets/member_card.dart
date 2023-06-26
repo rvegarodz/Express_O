@@ -15,7 +15,7 @@ Widget buildMemberCard(
       borderRadius: BorderRadius.circular(8),
       boxShadow: [
         BoxShadow(
-          color: Colors.black.withOpacity(0.2),
+          color: Colors.black.withOpacity(0.6),
           blurRadius: 4,
           offset: Offset(0, 2),
         ),
