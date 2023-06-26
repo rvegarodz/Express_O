@@ -25,6 +25,10 @@ form > * {
   margin: 10px 0;
 }
 
+label {
+  color: var(--dark-terminal-color);
+}
+
 button {
   background-color: var(--accent-color);
 }
@@ -78,7 +82,7 @@ fieldset, input, select {
 }
 
 #payment-form {
-  border: #F6F9FC solid 1px;
+  border: var(--accent-color) solid 1px;
   border-radius: var(--radius);
   padding: 20px;
   margin: 20px 0;
