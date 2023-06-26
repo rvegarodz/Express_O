@@ -120,10 +120,10 @@ class LandingPage extends StatelessWidget {
                     children: [
                       Text(
                         'About',
-                        style: GoogleFonts.poppins(
-                          fontSize: descriptionFontSize,
+                        style: GoogleFonts.pacifico(
+                          fontSize: 24,
                           fontWeight: FontWeight.bold,
-                          color: Colors.white.withOpacity(0.8),
+                          color: Colors.white,
                         ),
                       ),
                       SizedBox(height: 8),
