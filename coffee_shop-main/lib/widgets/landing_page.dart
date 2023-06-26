@@ -48,20 +48,22 @@ class LandingPage extends StatelessWidget {
                 Container(
                   padding: EdgeInsets.all(10.0),
                   decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Colors.white,
-                      width: 2.0,
-                    ),
-                    borderRadius: BorderRadius.circular(10.0),
-                    color: Color(0xFFE57734),
+                    color: Color(0xFF212325),
+                    borderRadius: BorderRadius.circular(8),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.6),
+                        blurRadius: 4,
+                        offset: Offset(0, 2),
+                      ),
+                    ],
                   ),
                   child: Text(
                     "Effortless coffee at your fingertips: Order ahead and pick up your perfectly crafted brew from our online coffee shop, making your mornings hassle-free.",
                     style: GoogleFonts.poppins(
-                      fontSize: descriptionFontSize,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
+                        fontSize: descriptionFontSize,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white.withOpacity(0.8)),
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -118,20 +120,19 @@ class LandingPage extends StatelessWidget {
                     children: [
                       Text(
                         'About',
-                        style: TextStyle(
-                          fontSize: 24,
-                          //fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                        style: GoogleFonts.poppins(
+                          fontSize: descriptionFontSize,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white.withOpacity(0.8),
                         ),
                       ),
                       SizedBox(height: 8),
                       Text(
                         'Our project, Express O\', was inspired by our own experiences and a small coffee shop that we used to visit. We noticed that the coffee shop had a lot of potential, but the ordering and payment process could be made more efficient. That\'s when we decided to design a solution that would automate the ordering and payment process, while also providing the convenience of ordering ahead.\n\nThis project is a Portfolio Project for Holberton School, where we are honing our skills in software development. It allowed us to apply our knowledge and creativity to create a seamless coffee shop experience. We are proud to present Express O\', a platform that brings together the love for coffee and the power of technology.',
                         style: TextStyle(
-                          fontSize: descriptionFontSize,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
+                            fontSize: descriptionFontSize,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white.withOpacity(0.8)),
                         textAlign: TextAlign.center,
                       ),
                       SizedBox(height: 8),
