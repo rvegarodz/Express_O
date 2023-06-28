@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const {error: stripeError} = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: `${window.location.origin}/return.html`,
+        return_url: `https://express-o.netlify.app/#/`,
       }
     });
 
