@@ -83,7 +83,12 @@ class _HomeScreenState extends State<HomeScreen>
                     ),
                     InkWell(
                         onTap: () {},
-                        child: ShoppingCartWidget(cartItemCount: cartItemCount))
+                        child: ShoppingCartWidget(
+                          cartItemCount: cartItemCount,
+                          orderList: [],
+                          time: '',
+                          user: user,
+                        ))
                   ],
                 ),
               ),
