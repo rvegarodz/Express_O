@@ -1,7 +1,7 @@
 import 'dart:convert';
+import 'dart:html';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
 
 class OrderScreen extends StatelessWidget {
@@ -79,8 +79,8 @@ class OrderScreen extends StatelessWidget {
     // Verifying POST Status
     print('Response status code: ${response.statusCode}');
     if (response.statusCode == 200) {
-      // Launch the payment URL in new tab
-      await launchUrl(urlPayment);
+      // Open the payment URL in the same tab/window
+      window.location.href = urlPayment.toString();
     } else {
       throw Exception('Failed to create payment intent');
     }
