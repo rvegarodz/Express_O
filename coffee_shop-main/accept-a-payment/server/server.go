@@ -119,8 +119,10 @@ func handleCreatePaymentIntent(w http.ResponseWriter, r *http.Request) {
 	clientSecret = pi.ClientSecret
 
 	writeJSON(w, map[string]interface{}{
-		"clientSecret": pi.ClientSecret,
-		"paymentURL":   paymentURL,
+		"paymentIntentID": pi.ID,
+		"clientSecret":    pi.ClientSecret,
+		"paymentURL":      paymentURL,
+		"status":          pi.Status,
 	})
 }
 
@@ -147,8 +149,22 @@ func handleWebhook(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if event.Type == "checkout.session.completed" {
+	switch event.Type {
+	case "payment_intent.created":
+		// Handle payment_intent.created event
+		fmt.Println("Payment Intent created!")
+	case "payment_intent.succeeded":
+		// Handle payment_intent.succeeded event
+		fmt.Println("Payment Intent succeeded!")
+	case "payment_intent.payment_failed":
+		// Handle payment_intent.payment_failed event
+		fmt.Println("Payment Intent payment failed!")
+	case "checkout.session.completed":
+		// Handle checkout.session.completed event
 		fmt.Println("Checkout Session completed!")
+	default:
+		// Handle other webhook events
+		fmt.Println("Unhandled event:", event.Type)
 	}
 
 	writeJSON(w, nil)
