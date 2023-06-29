@@ -156,7 +156,7 @@ func handleWebhook(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("Payment Intent succeeded!")
 
 		// Store the PaymentIntentSucceededEvent
-		paymentIntent := event.Data.Object.(*stripe.PaymentIntent)
+		paymentIntent, ok := event.Data.Object.(*stripe.PaymentIntent)
 		succeededEvent := PaymentIntentSucceededEvent{
 			EventID:         event.ID,
 			PaymentIntentID: paymentIntent.ID,
