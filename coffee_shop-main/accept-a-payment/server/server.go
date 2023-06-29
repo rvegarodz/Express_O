@@ -13,6 +13,16 @@ import (
 	"github.com/stripe/stripe-go/v72/webhook"
 )
 
+// PaymentIntentSucceededEvent represents the structure of the payment_intent.succeeded event.
+type PaymentIntentSucceededEvent struct {
+	EventID         string `json:"event_id"`
+	PaymentIntentID string `json:"payment_intent_id"`
+	AmountReceived  int64  `json:"amount_received"`
+	Status          string `json:"status"`
+}
+
+var succeededEvents []PaymentIntentSucceededEvent
+
 func main() {
 	stripe.Key = os.Getenv("STRIPE_SECRET_KEY")
 
@@ -26,24 +36,14 @@ func main() {
 	http.HandleFunc("/config", handleConfig)
 	http.HandleFunc("/create-payment-intent", handleCreatePaymentIntent)
 	http.HandleFunc("/webhook", handleWebhook)
+	http.HandleFunc("/payment-intent-events", handlePaymentIntentEvents)
+	http.HandleFunc("/payment-intent-event", handlePaymentIntentEvent)
 
 	log.Println("Server running...")
 	err := http.ListenAndServe(":"+os.Getenv("PORT"), enableCors(http.DefaultServeMux))
 	if err != nil {
 		log.Fatal("Server failed to start: ", err)
 	}
-}
-
-// ErrorResponseMessage represents the structure of the error
-// object sent in failed responses.
-type ErrorResponseMessage struct {
-	Message string `json:"message"`
-}
-
-// ErrorResponse represents the structure of the error object sent
-// in failed responses.
-type ErrorResponse struct {
-	Error *ErrorResponseMessage `json:"error"`
 }
 
 func enableCors(handler http.Handler) http.Handler {
@@ -115,13 +115,11 @@ func handleCreatePaymentIntent(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	paymentURL = fmt.Sprintf("https://your-website.com/payments/%s", pi.ID)
 	clientSecret = pi.ClientSecret
 
 	writeJSON(w, map[string]interface{}{
 		"paymentIntentID": pi.ID,
 		"clientSecret":    pi.ClientSecret,
-		"paymentURL":      paymentURL,
 		"status":          pi.Status,
 	})
 }
@@ -156,18 +154,43 @@ func handleWebhook(w http.ResponseWriter, r *http.Request) {
 	case "payment_intent.succeeded":
 		// Handle payment_intent.succeeded event
 		fmt.Println("Payment Intent succeeded!")
+
+		// Store the PaymentIntentSucceededEvent
+		paymentIntent := event.Data.Object.(*stripe.PaymentIntent)
+		succeededEvent := PaymentIntentSucceededEvent{
+			EventID:         event.ID,
+			PaymentIntentID: paymentIntent.ID,
+			AmountReceived:  paymentIntent.AmountReceived,
+			Status:          paymentIntent.Status,
+		}
+		succeededEvents = append(succeededEvents, succeededEvent)
+
 	case "payment_intent.payment_failed":
 		// Handle payment_intent.payment_failed event
 		fmt.Println("Payment Intent payment failed!")
-	case "checkout.session.completed":
-		// Handle checkout.session.completed event
-		fmt.Println("Checkout Session completed!")
 	default:
 		// Handle other webhook events
 		fmt.Println("Unhandled event:", event.Type)
 	}
 
 	writeJSON(w, nil)
+}
+
+func handlePaymentIntentEvents(w http.ResponseWriter, r *http.Request) {
+	writeJSON(w, succeededEvents)
+}
+
+func handlePaymentIntentEvent(w http.ResponseWriter, r *http.Request) {
+	paymentIntentID := r.URL.Query().Get("payment_intent_id")
+
+	for _, event := range succeededEvents {
+		if event.PaymentIntentID == paymentIntentID {
+			writeJSON(w, event)
+			return
+		}
+	}
+
+	http.NotFound(w, r)
 }
 
 func writeJSON(w http.ResponseWriter, v interface{}) {

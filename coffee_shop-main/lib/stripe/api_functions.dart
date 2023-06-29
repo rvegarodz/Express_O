@@ -28,34 +28,26 @@ Future<void> createPaymentIntentAndRedirect(int total) async {
   print('Response status code: ${response.statusCode}');
   if (response.statusCode == 200) {
     final jsonData = json.decode(response.body);
-    final clientSecret = jsonData['clientSecret'];
+    final paymentIntentID = jsonData['paymentIntentID'];
 
     // Launch the payment URL in new tab
     await launchUrl(urlPayment);
 
     // Check if the payment URL
-    retrievePaymentIntentWithRetry(clientSecret);
+    retrievePaymentIntentWithRetry(paymentIntentID);
   } else {
     throw Exception('Failed to create payment intent');
   }
 }
 
-Future<void> retrievePaymentIntentWithRetry(String clientSecret) async {
-  // replace this with get to /config
-  final apiSecretKey =
-      'pk_test_51NId2JJEeTzUc4tCQq2NrZosWy3oJfu6ZfpTHQCbsxc2h2dNOQRWuN3gq46e9mmANKvQeiGwPT2e77mWXqBgFkzG009VTFGCZX';
-
-  final maxRetryAttempts = 6;
-  final retryDelay = Duration(seconds: 10);
-
+Future<void> retrievePaymentIntentWithRetry(String paymentIntentID) async {
+  final maxRetryAttempts = 10;
+  final retryDelay = Duration(seconds: 40);
   var retryAttempts = 0;
 
   while (retryAttempts < maxRetryAttempts) {
     final response = await http.get(
-      Uri.parse('https://api.stripe.com/v1/payment_intents/$clientSecret'),
-      headers: {
-        'Authorization': 'Bearer $apiSecretKey',
-      },
+      Uri.parse('https://your-server.com/payment-intent?id=$paymentIntentID'),
     );
 
     if (response.statusCode == 200) {
