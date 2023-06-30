@@ -67,7 +67,7 @@ class HomeBottomBar extends StatelessWidget {
               child: Container(
                 padding: EdgeInsets.symmetric(vertical: 15, horizontal: 50),
                 child: Text(
-                  "Pay",
+                  "Checkout",
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 22,
