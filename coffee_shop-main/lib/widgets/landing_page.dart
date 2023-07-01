@@ -155,7 +155,7 @@ class LandingPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      SizedBox(height: 32),
+                      SizedBox(height: 100),
                       Text(
                         'Our Team',
                         style: GoogleFonts.pacifico(
