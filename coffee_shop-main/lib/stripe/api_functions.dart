@@ -48,7 +48,7 @@ Future<void> retrievePaymentIntentWithRetry(String paymentIntentID) async {
   while (retryAttempts < maxRetryAttempts) {
     final response = await http.get(
       Uri.parse(
-          'https://rewardsprogram-production.up.railway.app/payment-intent?id=$paymentIntentID'),
+          'https://payment.up.railway.app/payment-intent?id=$paymentIntentID'),
     );
 
     if (response.statusCode == 200) {

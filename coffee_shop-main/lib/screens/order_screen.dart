@@ -1,9 +1,10 @@
+import 'package:coffee_shop/db/firebase_services.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:coffee_shop/stripe/api_functions.dart';
 
 class OrderScreen extends StatelessWidget {
-  final User? user;
+  final User user;
   final String time;
   final List<dynamic> orderData;
 
@@ -151,6 +152,14 @@ class OrderScreen extends StatelessWidget {
                         final totalDouble = await orderList;
                         final totalStr = formatTotal(totalDouble[3]);
                         print(totalStr);
+                        try {
+                          print(orderList);
+                          await FirebaseService.addOrders(
+                              user.uid, orderData, time);
+                          print(orderList);
+                        } catch (e) {
+                          print("Error adding orders: $e");
+                        }
                         await createPaymentIntentAndRedirect(totalStr);
                       },
                       child: Padding(
