@@ -5,11 +5,10 @@ import 'package:http/http.dart' as http;
 
 /// Function that make a POST request before launching new tab
 Future<void> createPaymentIntentAndRedirect(int total) async {
-  final urlPost = Uri.parse(
-      'https://rewardsprogram-production.up.railway.app/create-payment-intent');
+  final urlPost =
+      Uri.parse('https://payment.up.railway.app/create-payment-intent');
 
-  final urlPayment =
-      Uri.parse('https://rewardsprogram-production.up.railway.app/');
+  final urlPayment = Uri.parse('https://payment.up.railway.app/');
   final payload = {
     'amount': total,
     'currency': 'USD',
