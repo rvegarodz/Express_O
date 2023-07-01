@@ -71,7 +71,7 @@ class LandingPage extends StatelessWidget {
                 Text(
                   "Preview Of Our Coffee Shop",
                   style: GoogleFonts.pacifico(
-                      fontSize: 25, // Set a suitable font size for the heading
+                      fontSize: 24, // Set a suitable font size for the heading
                       color: Colors.white),
                   textAlign: TextAlign.center,
                 ),
