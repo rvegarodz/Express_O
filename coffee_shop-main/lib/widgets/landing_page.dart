@@ -58,13 +58,12 @@ class LandingPage extends StatelessWidget {
                     ],
                   ),
                   child: Text(
-                    "Effortless coffee at your fingertips: Order ahead and pick up your perfectly crafted brew from our online coffee shop, making your mornings hassle-free.",
-                    style: GoogleFonts.poppins(
-                        fontSize: descriptionFontSize,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white.withOpacity(0.8)),
-                    textAlign: TextAlign.center,
-                  ),
+                      "Effortless coffee at your fingertips: Order ahead and pick up your perfectly crafted brew from our online coffee shop, making your mornings hassle-free.",
+                      style: GoogleFonts.poppins(
+                          fontSize: descriptionFontSize,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white.withOpacity(0.8)),
+                      textAlign: TextAlign.center),
                 ),
                 SizedBox(
                     height:
@@ -73,7 +72,6 @@ class LandingPage extends StatelessWidget {
                   "Preview Of Our Coffee Shop",
                   style: GoogleFonts.pacifico(
                       fontSize: 25, // Set a suitable font size for the heading
-                      fontWeight: FontWeight.bold,
                       color: Colors.white),
                   textAlign: TextAlign.center,
                 ),
@@ -135,7 +133,6 @@ class LandingPage extends StatelessWidget {
                         'About',
                         style: GoogleFonts.pacifico(
                           fontSize: 24,
-                          fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
                       ),
@@ -163,7 +160,6 @@ class LandingPage extends StatelessWidget {
                         'Our Team',
                         style: GoogleFonts.pacifico(
                           fontSize: 24,
-                          fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
                       ),
