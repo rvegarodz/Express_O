@@ -1,20 +1,23 @@
 @import url('https://fonts.googleapis.com/css?family=Raleway&display=swap');
 
 :root {
+<<<<<<< HEAD
   --light-grey: #2A2D2F;
+=======
+>>>>>>> 69dda1b56046ae63c81cd3a4032a0a23947274dc
   --dark-terminal-color: #FFFF;
   --accent-color: #E57734;
   --radius: 3px;
 }
 
 body {
-  background-color: var(--light-grey);
+  background-color: white;
   padding: 20px;
   font-family: 'Raleway';
   display: flex;
   justify-content: center;
   font-size: 1.2em;
-  color: var(--dark-terminal-color);
+  color: var(--light-grey);
 }
 
 main {
