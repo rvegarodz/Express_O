@@ -2,11 +2,9 @@
 
 :root {
   --light-grey: #2A2D2F;
-  --color-text: #FFFF;
   --dark-terminal-color: #FFFF;
   --accent-color: #E57734;
   --radius: 3px;
-  --color-text: #FFFF;
 }
 
 body {
@@ -100,4 +98,14 @@ fieldset, input, select {
   margin: 20px 0;
   border-radius: var(--radius);
   font-size:0.7em;
+}
+
+/* Custom background color for the payment element container */
+#payment-element {
+  background-color: var(--light-grey);
+}
+
+/* Custom text color for the payment input field */
+#payment-element .StripeElement {
+  color: var(--light-grey);
 }
