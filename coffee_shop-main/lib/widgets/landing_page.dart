@@ -3,7 +3,6 @@ import 'package:coffee_shop/widgets/member_card.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class LandingPage extends StatelessWidget {
   final List<String> imageUrls = [
@@ -20,7 +19,7 @@ class LandingPage extends StatelessWidget {
     final screenSize = MediaQuery.of(context).size;
     final isLargeScreen = screenSize.width > 600;
 
-    final welcomeFontSize = isLargeScreen ? 40.0 : 25.0;
+    final welcomeFontSize = isLargeScreen ? 40.0 : 30.0;
     final descriptionFontSize = isLargeScreen ? 16.0 : 12.0;
     final avatarRadius = isLargeScreen ? 60.0 : 40.0;
 
@@ -29,7 +28,7 @@ class LandingPage extends StatelessWidget {
         color: Theme.of(context).scaffoldBackgroundColor,
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: EdgeInsets.only(top: 100, bottom: 40),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -44,7 +43,7 @@ class LandingPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: 16),
+                SizedBox(height: 50), // Increased from 16 to 50
                 Container(
                   padding: EdgeInsets.all(10.0),
                   decoration: BoxDecoration(
@@ -67,7 +66,20 @@ class LandingPage extends StatelessWidget {
                     textAlign: TextAlign.center,
                   ),
                 ),
-                SizedBox(height: 32),
+                SizedBox(
+                    height:
+                        100), // Increased the height from 32 to 48 for more space
+                Text(
+                  "Preview Of Our Coffee Shop",
+                  style: GoogleFonts.pacifico(
+                      fontSize: 25, // Set a suitable font size for the heading
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(
+                    height:
+                        80), // Added another SizedBox for space between the heading and the slideshow
                 Container(
                   height: 540, // Set the desired height for the image slideshow
                   width: 600, // Set the desired width for the image slideshow
@@ -102,6 +114,7 @@ class LandingPage extends StatelessWidget {
                     }).toList(),
                   ),
                 ),
+                SizedBox(height: 100), // Add a SizedBox for space
                 Container(
                   margin: EdgeInsets.symmetric(vertical: 16),
                   padding: EdgeInsets.all(16),
@@ -126,48 +139,19 @@ class LandingPage extends StatelessWidget {
                           color: Colors.white,
                         ),
                       ),
-                      SizedBox(height: 8),
+                      SizedBox(height: 15),
                       Text(
-                        'Our project, Express O\', was inspired by our own experiences and a small coffee shop that we used to visit. We noticed that the coffee shop had a lot of potential, but the ordering and payment process could be made more efficient. That\'s when we decided to design a solution that would automate the ordering and payment process, while also providing the convenience of ordering ahead.\n\nThis project is a Portfolio Project for Holberton School, where we are honing our skills in software development. It allowed us to apply our knowledge and creativity to create a seamless coffee shop experience. We are proud to present Express O\', a platform that brings together the love for coffee and the power of technology.',
+                        'Our project, Express O\', was inspired by our own experiences and a small coffee shop that we used to visit. We noticed that the coffee shop had a lot of potential, but the ordering and payment process could be made more efficient. That\'s when we decided to design a solution that would automate the ordering and payment process, while also providing the convenience of ordering ahead.',
                         style: TextStyle(
                             fontSize: descriptionFontSize,
                             fontWeight: FontWeight.bold,
                             color: Colors.white.withOpacity(0.8)),
                         textAlign: TextAlign.center,
                       ),
-                      SizedBox(height: 8),
-                      ElevatedButton(
-                        onPressed: () async {
-                          final url = Uri.parse(
-                              'https://holbertonschoolpr.com/?utm_source=google&utm_medium=conversions&utm_campaign=google_search&utm_id=google_search&gad=1&gclid=EAIaIQobChMI5qCrzqPh_wIVEHmGCh3daQ1WEAAYASAAEgJNLfD_BwE');
-                          if (await canLaunchUrl(url)) {
-                            await launchUrl(url);
-                          } else {
-                            throw 'Could not launch $url';
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xFFE57734),
-                          padding: EdgeInsets.symmetric(
-                            vertical: 15,
-                            horizontal: 50,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        child: Text(
-                          'Holberton School',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: descriptionFontSize,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
                     ],
                   ),
                 ),
+
                 SingleChildScrollView(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -175,41 +159,83 @@ class LandingPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       SizedBox(height: 32),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Flexible(
-                            flex: 1,
-                            child: buildMemberCard(
-                              'Melissa Arroyo',
-                              'Frontend Developer',
-                              'images/Melissa.jpeg',
-                              avatarRadius,
-                              'https://www.linkedin.com/in/melissa-arroyo-torres/',
-                              'https://github.com/MelissaAT',
-                            ),
-                          ),
-                          Flexible(
-                            flex: 1,
-                            child: buildMemberCard(
-                              'Rafael Vega',
-                              'Backend Developer',
-                              'images/Rafael.jpeg',
-                              avatarRadius,
-                              'https://www.linkedin.com/in/rvegarodz/',
-                              'https://github.com/rvegarodz',
-                            ),
-                          ),
-                        ],
+                      Text(
+                        'Our Team',
+                        style: GoogleFonts.pacifico(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
                       ),
-                      SizedBox(height: 16),
-                      buildMemberCard(
-                        'Yahdiel Saldaña',
-                        'Backend Developer',
-                        'images/Yahdiel.jpeg',
-                        avatarRadius,
-                        'https://www.linkedin.com/in/yahdielsaldana',
-                        'https://github.com/yahdielo',
+                      SizedBox(height: 100),
+                      LayoutBuilder(
+                        builder:
+                            (BuildContext context, BoxConstraints constraints) {
+                          if (constraints.maxWidth > 600) {
+                            // If screen width is greater than 600, show in a row
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                buildMemberCard(
+                                  'Melissa Arroyo',
+                                  'Frontend Developer',
+                                  'images/Melissa.jpeg',
+                                  avatarRadius,
+                                  'https://www.linkedin.com/in/melissa-arroyo-torres/',
+                                  'https://github.com/MelissaAT',
+                                ),
+                                buildMemberCard(
+                                  'Rafael Vega',
+                                  'Backend Developer',
+                                  'images/Rafael.jpeg',
+                                  avatarRadius,
+                                  'https://www.linkedin.com/in/rvegarodz/',
+                                  'https://github.com/rvegarodz',
+                                ),
+                                buildMemberCard(
+                                  'Yahdiel Saldaña',
+                                  'Backend Developer',
+                                  'images/Yahdiel.jpeg',
+                                  avatarRadius,
+                                  'https://www.linkedin.com/in/yahdielsaldana',
+                                  'https://github.com/yahdielo',
+                                ),
+                              ],
+                            );
+                          } else {
+                            // If screen width is less than or equal to 600, show in a column
+                            return Column(
+                              children: [
+                                buildMemberCard(
+                                  'Melissa Arroyo',
+                                  'Frontend Developer',
+                                  'images/Melissa.jpeg',
+                                  avatarRadius,
+                                  'https://www.linkedin.com/in/melissa-arroyo-torres/',
+                                  'https://github.com/MelissaAT',
+                                ),
+                                SizedBox(height: 16),
+                                buildMemberCard(
+                                  'Rafael Vega',
+                                  'Backend Developer',
+                                  'images/Rafael.jpeg',
+                                  avatarRadius,
+                                  'https://www.linkedin.com/in/rvegarodz/',
+                                  'https://github.com/rvegarodz',
+                                ),
+                                SizedBox(height: 16),
+                                buildMemberCard(
+                                  'Yahdiel Saldaña',
+                                  'Backend Developer',
+                                  'images/Yahdiel.jpeg',
+                                  avatarRadius,
+                                  'https://www.linkedin.com/in/yahdielsaldana',
+                                  'https://github.com/yahdielo',
+                                ),
+                              ],
+                            );
+                          }
+                        },
                       ),
                       SizedBox(height: 32),
                       GestureDetector(
