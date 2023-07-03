@@ -99,13 +99,3 @@ fieldset, input, select {
   border-radius: var(--radius);
   font-size:0.7em;
 }
-
-/* Custom background color for the payment element container */
-#payment-element {
-  background-color: var(--light-grey);
-}
-
-/* Custom text color for the payment input field */
-#payment-element .StripeElement {
-  color: var(--light-grey);
-}
