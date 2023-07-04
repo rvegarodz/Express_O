@@ -1,6 +1,6 @@
 import 'package:coffee_shop/widgets/items_widget.dart';
 import 'package:coffee_shop/widgets/home_bottom_bar.dart';
-
+import 'package:coffee_shop/widgets/phone_items-widget.dart';
 import 'package:coffee_shop/widgets/date_time.dart';
 import 'package:coffee_shop/widgets/shopping_cart.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -123,16 +123,30 @@ class _HomeScreenState extends State<HomeScreen>
                   Tab(text: "Coffee"),
                 ],
               ),
-              SizedBox(height: 10),
-              Center(
-                child: [
-                  ItemsWidget(
+              SizedBox(height:10),
+             Center(
+              child: LayoutBuilder(
+                builder: (BuildContext context, BoxConstraints constraints) {
+                  if (constraints.maxWidth >= 600) {
+                    // Laptop or larger screen size
+                    return ItemsWidget(
                       user: widget.user,
                       orderList: orderList,
                       updateOrderList: updateOrderList,
-                      time: time)
-                ][_tabController.index],
-              )
+                      time: time,
+                    );
+                  } else {
+                    // Phone or smaller screen size
+                    return PhoneItemsWidget(
+                      user: widget.user,
+                      orderList: orderList,
+                      updateOrderList: updateOrderList,
+                      time: time,
+                    );
+                  }
+                },
+              ),
+              ),
             ],
           ),
         ),

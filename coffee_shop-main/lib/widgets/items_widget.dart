@@ -91,12 +91,13 @@ class _ItemsWidgetState extends State<ItemsWidget> {
   Widget build(BuildContext context) {
     return GridView.count(
       physics: NeverScrollableScrollPhysics(),
-      crossAxisCount: 2,
+      crossAxisCount: 3, //phone is 2
       shrinkWrap: true,
-      childAspectRatio: (1 / 1.5),
+      childAspectRatio: 2,// for iphone(1 / 1.5),
       children: [
         for (int i = 0; i < items.length; i++)
           Container(
+            height: 10,
             padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
             margin: EdgeInsets.symmetric(vertical: 8, horizontal: 13),
             decoration: BoxDecoration(
