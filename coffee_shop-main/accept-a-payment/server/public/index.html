@@ -7,19 +7,13 @@
     <title>Payment</title>
 
     <link rel="stylesheet" href="./css/base.css" />
+    <link rel="icon" type="image" href="favicon.ico"/>
     <script src="https://js.stripe.com/v3/"></script>
-
-    <script src="./utils.js" defer></script>
     <script src="./index.js" defer></script>
   </head>
   <body>
     <main>
       <h1>Payment</h1>
-
-      <p>Enable more payment method types <a
-        href="https://dashboard.stripe.com/settings/payment_methods" target="_blank">in your
-        dashboard</a>.</p>
-
       <form id="payment-form">
         <div id="link-authentication-element">
           <!-- Elements will create authentication element here -->
@@ -32,8 +26,6 @@
           <!-- Display error message to your customers here -->
         </div>
       </form>
-
-      <div id="messages" role="alert" style="display: none;"></div>
     </main>
   </body>
 </html>

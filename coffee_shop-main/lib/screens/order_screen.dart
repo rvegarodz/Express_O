@@ -1,11 +1,10 @@
-import 'dart:convert';
+import 'package:coffee_shop/db/firebase_services.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:http/http.dart' as http;
+import 'package:coffee_shop/stripe/api_functions.dart';
 
 class OrderScreen extends StatelessWidget {
-  final User? user;
+  final User user;
   final String time;
   final List<dynamic> orderData;
 
@@ -54,36 +53,6 @@ class OrderScreen extends StatelessWidget {
 
     // Return the formatted total
     return totalInteger;
-  }
-
-  /// Function that make a POST request before launching new tab
-  Future<void> createPaymentIntentAndRedirect(int total) async {
-    final urlPost = Uri.parse(
-        'https://rewardsprogram-production.up.railway.app/create-payment-intent');
-    final urlPayment =
-        Uri.parse('https://rewardsprogram-production.up.railway.app/');
-    final payload = {
-      'amount': total,
-      'currency': 'USD',
-    };
-
-    // POST request to stripe
-    final response = await http.post(
-      urlPost,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: json.encode(payload),
-    );
-
-    // Verifying POST Status
-    print('Response status code: ${response.statusCode}');
-    if (response.statusCode == 200) {
-      // Launch the payment URL in new tab
-      await launchUrl(urlPayment);
-    } else {
-      throw Exception('Failed to create payment intent');
-    }
   }
 
   @override
@@ -183,6 +152,14 @@ class OrderScreen extends StatelessWidget {
                         final totalDouble = await orderList;
                         final totalStr = formatTotal(totalDouble[3]);
                         print(totalStr);
+                        try {
+                          print(orderList);
+                          await FirebaseService.addOrders(
+                              user.uid, orderData, time);
+                          print(orderList);
+                        } catch (e) {
+                          print("Error adding orders: $e");
+                        }
                         await createPaymentIntentAndRedirect(totalStr);
                       },
                       child: Padding(

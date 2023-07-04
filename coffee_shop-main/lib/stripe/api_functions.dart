@@ -1,15 +1,20 @@
 import 'dart:convert';
-import 'package:url_launcher/url_launcher.dart';
+import 'dart:async';
+import 'dart:html';
 import 'package:http/http.dart' as http;
 
+/// Function that make a POST request before launching new tab
 Future<void> createPaymentIntentAndRedirect(int total) async {
-  final urlPost = Uri.parse('http://localhost:4242/create-payment-intent');
-  final urlPayment = Uri.parse('http://localhost:4242/');
+  final urlPost =
+      Uri.parse('https://payment.up.railway.app/create-payment-intent');
+
+  final urlPayment = Uri.parse('https://payment.up.railway.app/');
   final payload = {
     'amount': total,
     'currency': 'USD',
   };
-  // POST REQUEST TO STRIPE
+
+  // POST request to stripe
   final response = await http.post(
     urlPost,
     headers: {
@@ -17,92 +22,65 @@ Future<void> createPaymentIntentAndRedirect(int total) async {
     },
     body: json.encode(payload),
   );
+
   // Verifying POST Status
   print('Response status code: ${response.statusCode}');
   if (response.statusCode == 200) {
-    // Launch the payment URL in new tab
-    await launchUrl(urlPayment);
+    // The following lines are for Business Owner Side :
+    // |--------------------------------------------------------|
+    // |  final jsonData = json.decode(response.body);          |
+    // |  final paymentIntentID = jsonData['paymentIntentID'];  |
+    // |--------------------------------------------------------|
+
+    // Open the payment URL in the same tab/window
+    window.location.href = urlPayment.toString();
+
+    // Check if the payment process was successful,
+    // to trigger other actions as display order to Business Owner Screen:
+    // |--------------------------------------------------------|
+    // |  retrievePaymentIntentWithRetry(paymentIntentID);      |
+    // |--------------------------------------------------------|
   } else {
     throw Exception('Failed to create payment intent');
   }
 }
 
-// Function that create a new price for the product
-Future<void> makePostRequestPrice(String price) async {
-  var url = Uri.parse('https://api.stripe.com/v1/prices');
-  var headers = {
-    'Authorization':
-        'Bearer sk_test_51NId2JJEeTzUc4tC79XYEn4W8WrQZcon0pIXnemXTLhsLx97E5SjKn5hmtJ931S44c3ssT4lwgG7LbU3XlAxIoDn00IsnISmFI',
-    'Content-Type': 'application/x-www-form-urlencoded'
-  };
-  var body = {
-    'unit_amount': price,
-    'currency': 'usd',
-    'product': 'prod_O4pR5OpJM2YFAn'
-  };
+// At the moment is not in use.
+Future<void> retrievePaymentIntentWithRetry(String paymentIntentID) async {
+  final maxRetryAttempts = 10;
+  final retryDelay = Duration(seconds: 40);
+  var retryAttempts = 0;
 
-  var response = await http.post(url, headers: headers, body: body);
+  while (retryAttempts < maxRetryAttempts) {
+    final response = await http.get(
+      Uri.parse(
+          'https://payment.up.railway.app/payment-intent?id=$paymentIntentID'),
+    );
 
-  if (response.statusCode == 200) {
-    // Successful POST request
-    var responseBody = jsonDecode(response.body);
-    var id = responseBody['id'];
-    print('Price ID: $id');
-    updateEnvVariable(id);
-  } else {
-    // Error handling
-    print('POST request failed with status: ${response.statusCode}');
-  }
-}
+    if (response.statusCode == 200) {
+      final jsonData = json.decode(response.body);
+      final status = jsonData['status'];
 
-Future<void> updateEnvVariable(String value) async {
-  final url = Uri.parse('https://api.netlify.com/api/v1');
-  final accountId = 'express o';
-  final key = 'PRICE'; // Name of the environment variable to update
-  final token =
-      'gwfKZk_mGNg2QNlww1qx2XWrGA80GwUr1GFzcPYXy6s'; // Replace with your Netlify API token
+      if (status == 'succeeded') {
+        print('Payment intent succeeded!');
+        // Handle the successful payment intent here
 
-  final response = await http.put(
-    Uri.parse('$url/accounts/$accountId/env/$key'),
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer $token',
-    },
-    body: '{"value": "$value"}',
-  );
+        break; // Exit the loop if successful
+      } else {
+        print('Payment intent status: $status');
+        // Handle the payment intent status as needed
+      }
+    } else {
+      print('Request failed with status: ${response.statusCode}');
+    }
 
-  if (response.statusCode == 200) {
-    print('Environment variable updated successfully');
-  } else {
-    print('Failed to update environment variable');
-    print('Status code: ${response.statusCode}');
-    print('Response body: ${response.body}');
-  }
-}
+    retryAttempts++;
 
-// Function that create a new price for the product
-Future<void> updatePriceEnv(String price) async {
-  var url = Uri.parse('https://api.netlify.com/api/v1/');
-  var headers = {
-    'Authorization':
-        'Bearer sk_test_51NId2JJEeTzUc4tC79XYEn4W8WrQZcon0pIXnemXTLhsLx97E5SjKn5hmtJ931S44c3ssT4lwgG7LbU3XlAxIoDn00IsnISmFI',
-    'Content-Type': 'application/x-www-form-urlencoded'
-  };
-  var body = {
-    'unit_amount': price,
-    'currency': 'usd',
-    'product': 'prod_O4pR5OpJM2YFAn'
-  };
-
-  var response = await http.post(url, headers: headers, body: body);
-
-  if (response.statusCode == 200) {
-    // Successful POST request
-    var responseBody = jsonDecode(response.body);
-    var id = responseBody['id'];
-    print('Price ID: $id');
-  } else {
-    // Error handling
-    print('POST request failed with status: ${response.statusCode}');
+    if (retryAttempts < maxRetryAttempts) {
+      await Future.delayed(retryDelay);
+      print('Retrying...');
+    } else {
+      print('Exceeded maximum retry attempts.');
+    }
   }
 }

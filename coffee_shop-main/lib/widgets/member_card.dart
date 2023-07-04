@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 Widget buildMemberCard(
@@ -11,11 +12,11 @@ Widget buildMemberCard(
 ) {
   return Container(
     decoration: BoxDecoration(
-      color: Color(0xFF212325),
+      color: Color(0xFF212325).withOpacity(0.8),
       borderRadius: BorderRadius.circular(8),
       boxShadow: [
         BoxShadow(
-          color: Colors.black.withOpacity(0.6),
+          color: Colors.grey.withOpacity(0.2),
           blurRadius: 4,
           offset: Offset(0, 2),
         ),
@@ -36,18 +37,16 @@ Widget buildMemberCard(
         SizedBox(height: 8),
         Text(
           name,
-          style: TextStyle(
+          style: GoogleFonts.poppins(
             fontSize: 18,
             fontWeight: FontWeight.bold,
-            fontFamily: 'Pacifico',
             color: Colors.white,
           ),
         ),
         Text(
           position,
-          style: TextStyle(
+          style: GoogleFonts.poppins(
             fontSize: 16,
-            fontFamily: 'Pacifico',
             color: Colors.white,
           ),
         ),
@@ -73,7 +72,9 @@ Widget buildMemberCard(
                   SizedBox(height: 4),
                   Text(
                     "LinkedIn",
-                    style: TextStyle(color: Colors.white),
+                    style: GoogleFonts.poppins(
+                      color: Colors.white,
+                    ),
                   ),
                 ],
               ),

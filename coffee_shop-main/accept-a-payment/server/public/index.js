@@ -3,10 +3,10 @@ document.addEventListener('DOMContentLoaded', async () => {
   // is set in your .env file.
   const {publishableKey} = await fetch('/config').then((r) => r.json());
   if (!publishableKey) {
-    addMessage(
+    console.log(
       'No publishable key returned from the server. Please check `.env` and try again'
     );
-    alert('Please set your Stripe publishable API key in the .env file');
+    console.log('Please set your Stripe publishable API key in the .env file');
   }
 
   const stripe = Stripe(publishableKey, {
@@ -21,13 +21,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     clientSecret
   } = await fetch('/create-payment-intent').then(r => r.json());
   if (backendError) {
-    addMessage(backendError.message);
+    console.log(backendError.message);
   }
-  addMessage(`Client secret returned.`);
+  console.log(`Client secret returned.`);
 
   // Initialize Stripe Elements with the PaymentIntent's clientSecret,
   // then mount the payment element.
-  console.log('Client secret:', clientSecret);
   const elements = stripe.elements({ clientSecret });
   const paymentElement = elements.create('payment');
   paymentElement.mount('#payment-element');
@@ -73,7 +72,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     if (stripeError) {
-      addMessage(stripeError.message);
+      console.log(stripeError.message);
 
       // reenable the form.
       submitted = false;
