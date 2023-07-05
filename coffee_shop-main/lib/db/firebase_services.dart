@@ -6,8 +6,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class FirebaseService {
-  static Future<void> addOrders(
-      String userId, List<dynamic> items, String time) async {
+  static Future<void> addOrders(String userId, List<dynamic> items, int total,
+      String time, String paymentIntent) async {
     String docName = orderDocName(userId, time);
     final List<dynamic> orderItems = items.map((item) => item).toList();
     final userOrdersRef =
@@ -17,6 +17,8 @@ class FirebaseService {
     await myDocRef.set({
       'userId': userId,
       'time': time,
+      'total': total,
+      'paymentIntent': paymentIntent
     });
     for (int i = 0; i < orderItems.length; i++) {
       myDocRef.update({'item$i': orderItems[i]});

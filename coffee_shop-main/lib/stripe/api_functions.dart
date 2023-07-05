@@ -2,9 +2,11 @@ import 'dart:convert';
 import 'dart:async';
 import 'dart:html';
 import 'package:http/http.dart' as http;
+import 'package:coffee_shop/db/firebase_services.dart';
 
 /// Function that make a POST request before launching new tab
-Future<void> createPaymentIntentAndRedirect(int total) async {
+Future<void> createPaymentIntentAndRedirect(
+    int total, String userId, List<dynamic> items, String time) async {
   final urlPost =
       Uri.parse('https://payment.up.railway.app/create-payment-intent');
 
@@ -26,12 +28,12 @@ Future<void> createPaymentIntentAndRedirect(int total) async {
   // Verifying POST Status
   print('Response status code: ${response.statusCode}');
   if (response.statusCode == 200) {
-    // The following lines are for Business Owner Side :
-    // |--------------------------------------------------------|
-    // |  final jsonData = json.decode(response.body);          |
-    // |  final paymentIntentID = jsonData['paymentIntentID'];  |
-    // |--------------------------------------------------------|
+    final jsonData = json.decode(response.body);
+    final paymentIntentID = jsonData['paymentIntentID'];
 
+    // Push order information to database
+    await FirebaseService.addOrders(
+        userId, items, total, time, paymentIntentID);
     // Open the payment URL in the same tab/window
     window.location.href = urlPayment.toString();
 

@@ -108,80 +108,174 @@ class LogInPageState extends State<LogInPage> {
               child: Center(
                 child: _isLoading
                     ? CircularProgressIndicator()
-                    : SingleChildScrollView(
-                        padding: EdgeInsets.all(16),
-                        child: Form(
-                          key: _formKey,
-                          child: Column(
-                            children: [
-                              TextFormField(
-                                controller: _emailController,
-                                decoration: InputDecoration(
-                                  labelText: 'Email',
-                                  filled: true,
-                                  fillColor: Colors.white,
-                                  labelStyle: TextStyle(
-                                    color: Color(0xFFE57734),
-                                  ),
-                                ),
-                                keyboardType: TextInputType.emailAddress,
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return 'Please enter your email';
-                                  }
-                                  return null;
-                                },
-                              ),
-                              SizedBox(height: 16),
-                              TextFormField(
-                                controller: _passwordController,
-                                decoration: InputDecoration(
-                                  labelText: 'Password',
-                                  filled: true,
-                                  fillColor: Colors.white,
-                                  labelStyle: TextStyle(
-                                    color: Color(0xFFE57734),
-                                  ),
-                                ),
-                                obscureText: true,
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return 'Please enter your password';
-                                  }
-                                  return null;
-                                },
-                              ),
-                              SizedBox(height: 32.0, width: 32.0),
-                              Column(
-                                children: [
-                                  SizedBox(height: 80),
-                                  Material(
-                                    color: Color(0xFFE57734),
-                                    borderRadius: BorderRadius.circular(10),
-                                    child: InkWell(
-                                      onTap: () {
-                                        _logInWithEmailAndPassword();
-                                      },
-                                      child: Container(
-                                        padding: EdgeInsets.symmetric(
-                                            vertical: 15, horizontal: 50),
-                                        child: Text(
-                                          "Log In",
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 22,
-                                            fontWeight: FontWeight.bold,
-                                            letterSpacing: 1,
-                                          ),
+                    : LayoutBuilder(
+                        builder: (context, constraints) {
+                          if (constraints.maxWidth >= 600) {
+                            // Laptop or larger screen size
+                            return Container(
+                              width: 400,
+                              height: 400,
+                              padding: EdgeInsets.all(16),
+                              child: Form(
+                                key: _formKey,
+                                child: Column(
+                                  children: [
+                                    Expanded(
+                                      child: Align(
+                                        alignment: Alignment.center,
+                                        child: Column(
+                                          children: [
+                                            TextFormField(
+                                                controller: _emailController,
+                                                decoration: InputDecoration(
+                                                  labelText: 'Email',
+                                                  filled: true,
+                                                  fillColor: Colors.white,
+                                                  labelStyle: TextStyle(
+                                                    color: Color(0xFFE57734),
+                                                  ),
+                                                ),
+                                                keyboardType: TextInputType.emailAddress,
+                                                validator: (value) {
+                                                  if (value!.isEmpty) {
+                                                    return 'Please enter your email';
+                                                  }
+                                                  return null;
+                                                },
+                                            ),
+                                            SizedBox(height: 16),
+                                            TextFormField(
+                                              controller: _passwordController,
+                                                decoration: InputDecoration(
+                                                  labelText: 'Password',
+                                                  filled: true,
+                                                  fillColor: Colors.white,
+                                                  labelStyle: TextStyle(
+                                                    color: Color(0xFFE57734),
+                                                  ),
+                                                ),
+                                                obscureText: true,
+                                                validator: (value) {
+                                                  if (value!.isEmpty) {
+                                                    return 'Please enter your password';
+                                                  }
+                                                  return null;
+                                                },
+                                            ),
+                                          ],
                                         ),
                                       ),
                                     ),
-                                  ),
-                                ],
+                                    SizedBox(height: 32.0),
+                                    Column(
+                                      children: [
+                                        Material(
+                                          color: Color(0xFFE57734),
+                                            borderRadius: BorderRadius.circular(10),
+                                            child: InkWell(
+                                              onTap: () {
+                                                _logInWithEmailAndPassword();
+                                              },
+                                              child: Container(
+                                                padding: EdgeInsets.symmetric(
+                                                    vertical: 15, horizontal: 50),
+                                                child: Text(
+                                                  "Log In",
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 22,
+                                                    fontWeight: FontWeight.bold,
+                                                    letterSpacing: 1,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ],
-                          ),
-                        ),
+                            );
+                          } else {
+                            // Mobile screen size
+                            return SingleChildScrollView(
+                              padding: EdgeInsets.all(16),
+                              child: Form(
+                                key: _formKey,
+                                child: Column(
+                                  children: [
+                                    TextFormField(
+                                      controller: _emailController,
+                                      decoration: InputDecoration(
+                                        labelText: 'Email',
+                                        filled: true,
+                                        fillColor: Colors.white,
+                                        labelStyle: TextStyle(
+                                          color: Color(0xFFE57734),
+                                        ),
+                                      ),
+                                      keyboardType: TextInputType.emailAddress,
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return 'Please enter your email';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                    SizedBox(height: 16),
+                                    TextFormField(
+                                      controller: _passwordController,
+                                      decoration: InputDecoration(
+                                        labelText: 'Password',
+                                        filled: true,
+                                        fillColor: Colors.white,
+                                        labelStyle: TextStyle(
+                                          color: Color(0xFFE57734),
+                                        ),
+                                      ),
+                                      obscureText: true,
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return 'Please enter your password';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                    SizedBox(height: 32.0, width: 32.0),
+                                    Column(
+                                      children: [
+                                        SizedBox(height: 80),
+                                        Material(
+                                          color: Color(0xFFE57734),
+                                          borderRadius: BorderRadius.circular(10),
+                                          child: InkWell(
+                                            onTap: () {
+                                              _logInWithEmailAndPassword();
+                                            },
+                                            child: Container(
+                                              padding: EdgeInsets.symmetric(
+                                                  vertical: 15, horizontal: 50),
+                                              child: Text(
+                                                "Log In",
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 22,
+                                                  fontWeight: FontWeight.bold,
+                                                  letterSpacing: 1,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          }
+                        },
                       ),
               ),
             ),
