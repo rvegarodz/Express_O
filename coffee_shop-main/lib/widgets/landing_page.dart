@@ -44,25 +44,28 @@ class LandingPage extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 100),
-                ShaderMask(
-                  shaderCallback: (Rect bounds) {
-                    return LinearGradient(
-                      colors: [
-                        Color(0xffffa014),
-                        Color.fromARGB(255, 240, 238, 234)
-                      ],
-                      begin: Alignment.centerLeft,
-                      end: Alignment.centerRight,
-                    ).createShader(bounds);
-                  },
-                  child: Text(
-                    "Effortless coffee at your fingertips: Order ahead and pick up your perfectly crafted brew from our online coffee shop, making your mornings hassle-free.",
-                    style: GoogleFonts.poppins(
-                      fontSize: descriptionFontSize,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                Container(
+                  height: 200,
+                  child: ShaderMask(
+                    shaderCallback: (Rect bounds) {
+                      return LinearGradient(
+                        colors: [
+                          Color(0xffffa014),
+                          Color.fromARGB(255, 240, 238, 234)
+                        ],
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight,
+                      ).createShader(bounds);
+                    },
+                    child: Text(
+                      "Effortless coffee at your fingertips: Order ahead and pick up your perfectly crafted brew from our online coffee shop, making your mornings hassle-free.",
+                      style: GoogleFonts.poppins(
+                        fontSize: descriptionFontSize,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                      textAlign: TextAlign.left,
                     ),
-                    textAlign: TextAlign.left,
                   ),
                 ),
                 SizedBox(height: 200),
@@ -186,24 +189,27 @@ class LandingPage extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 15),
-                    ShaderMask(
-                      shaderCallback: (Rect bounds) {
-                        return LinearGradient(
-                          colors: [
-                            Color(0xffffa014),
-                            Color.fromARGB(255, 240, 238, 234)
-                          ],
-                          begin: Alignment.centerLeft,
-                          end: Alignment.centerRight,
-                        ).createShader(bounds);
-                      },
-                      child: Text(
-                        'Our project, Express O\', was inspired by our own experiences and a small coffee shop that we used to visit. We noticed that the coffee shop had a lot of potential, but the ordering and payment process could be made more efficient. That\'s when we decided to design a solution that would automate the ordering and payment process, while also providing the convenience of ordering ahead.',
-                        style: GoogleFonts.poppins(
-                          fontSize: 20,
-                          height: 1.5,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                    Container(
+                      height: 200,
+                      child: ShaderMask(
+                        shaderCallback: (Rect bounds) {
+                          return LinearGradient(
+                            colors: [
+                              Color(0xffffa014),
+                              Color.fromARGB(255, 240, 238, 234)
+                            ],
+                            begin: Alignment.centerLeft,
+                            end: Alignment.centerRight,
+                          ).createShader(bounds);
+                        },
+                        child: Text(
+                          'Our project, Express O\', was inspired by our own experiences and a small coffee shop that we used to visit. We noticed that the coffee shop had a lot of potential, but the ordering and payment process could be made more efficient. That\'s when we decided to design a solution that would automate the ordering and payment process, while also providing the convenience of ordering ahead.',
+                          style: GoogleFonts.poppins(
+                            fontSize: 20,
+                            height: 1.5,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),
