@@ -1,4 +1,3 @@
-import 'package:coffee_shop/db/firebase_services.dart';
 import 'package:coffee_shop/screens/order_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -17,13 +16,6 @@ class ShoppingCartWidget extends StatelessWidget {
   });
 
   void handleOrder(BuildContext context) async {
-    try {
-      print(orderList);
-      await FirebaseService.addOrders(user.uid, orderList, time);
-      print(orderList);
-    } catch (e) {
-      print("Error adding orders: $e");
-    }
     if (orderList.isNotEmpty) {
       Navigator.push(
         context,
