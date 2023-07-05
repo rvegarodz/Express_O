@@ -22,7 +22,7 @@ class LandingPage extends StatelessWidget {
     final screenSize = MediaQuery.of(context).size;
     final isLargeScreen = screenSize.width > 600;
 
-    final welcomeFontSize = isLargeScreen ? 70.0 : 30.0;
+    final welcomeFontSize = isLargeScreen ? 70.0 : 40.0;
     final descriptionFontSize = isLargeScreen ? 40.0 : 30.0;
     final avatarRadius = isLargeScreen ? 60.0 : 40.0;
 
@@ -45,7 +45,7 @@ class LandingPage extends StatelessWidget {
                 ),
                 SizedBox(height: 100),
                 Container(
-                  height: 200,
+                  height: 500,
                   child: ShaderMask(
                     shaderCallback: (Rect bounds) {
                       return LinearGradient(
@@ -68,7 +68,7 @@ class LandingPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: 200),
+                SizedBox(height: 1),
                 LayoutBuilder(
                   builder: (BuildContext context, BoxConstraints constraints) {
                     if (constraints.maxWidth > 600) {
@@ -190,7 +190,7 @@ class LandingPage extends StatelessWidget {
                     ),
                     SizedBox(height: 15),
                     Container(
-                      height: 200,
+                      height: 500,
                       child: ShaderMask(
                         shaderCallback: (Rect bounds) {
                           return LinearGradient(
@@ -215,7 +215,7 @@ class LandingPage extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(height: 100),
+                SizedBox(height: 1),
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
@@ -296,6 +296,7 @@ class LandingPage extends StatelessWidget {
                   },
                 ),
                 SizedBox(height: 100),
+                SizedBox(height: 100),
                 Center(
                   child: ElevatedButton(
                     onPressed: () {
@@ -319,9 +320,14 @@ class LandingPage extends StatelessWidget {
                       padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
                         EdgeInsets.symmetric(horizontal: 50, vertical: 20),
                       ),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                      ),
                     ),
                   ),
-                )
+                ),
               ],
             ),
           ),
