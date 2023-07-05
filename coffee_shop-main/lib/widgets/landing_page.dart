@@ -25,6 +25,7 @@ class LandingPage extends StatelessWidget {
     final welcomeFontSize = isLargeScreen ? 70.0 : 40.0;
     final descriptionFontSize = isLargeScreen ? 40.0 : 30.0;
     final avatarRadius = isLargeScreen ? 60.0 : 40.0;
+    final containersize = isLargeScreen ? 300.0 : 600.0;
 
     return Scaffold(
       body: Container(
@@ -45,7 +46,7 @@ class LandingPage extends StatelessWidget {
                 ),
                 SizedBox(height: 100),
                 Container(
-                  height: 500,
+                  height: containersize,
                   child: ShaderMask(
                     shaderCallback: (Rect bounds) {
                       return LinearGradient(
@@ -68,7 +69,7 @@ class LandingPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: 1),
+                SizedBox(height: 100),
                 LayoutBuilder(
                   builder: (BuildContext context, BoxConstraints constraints) {
                     if (constraints.maxWidth > 600) {
@@ -190,7 +191,7 @@ class LandingPage extends StatelessWidget {
                     ),
                     SizedBox(height: 15),
                     Container(
-                      height: 500,
+                      height: containersize,
                       child: ShaderMask(
                         shaderCallback: (Rect bounds) {
                           return LinearGradient(
@@ -295,7 +296,6 @@ class LandingPage extends StatelessWidget {
                     }
                   },
                 ),
-                SizedBox(height: 100),
                 SizedBox(height: 100),
                 Center(
                   child: ElevatedButton(
