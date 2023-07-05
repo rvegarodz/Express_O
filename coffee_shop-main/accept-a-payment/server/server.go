@@ -23,7 +23,7 @@ type PaymentIntentSucceededEvent struct {
 
 var succeededEvents []PaymentIntentSucceededEvent
 
-func main() {
+func main(()) {
 	stripe.Key = os.Getenv("STRIPE_SECRET_KEY")
 
 	stripe.SetAppInfo(&stripe.AppInfo{
