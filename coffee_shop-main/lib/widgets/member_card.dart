@@ -79,7 +79,7 @@ Widget buildMemberCard(
                 ],
               ),
             ),
-            SizedBox(width: 16), // Space between icons
+            SizedBox(width: 16),
             GestureDetector(
               onTap: () async {
                 final uri = Uri.parse(githubUrl);

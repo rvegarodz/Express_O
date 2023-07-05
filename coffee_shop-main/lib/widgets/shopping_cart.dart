@@ -31,8 +31,9 @@ class ShoppingCartWidget extends StatelessWidget {
           builder: (context) => OrderScreen(
             user: user,
             time: time,
-            orderData: [], // Pass an empty list as it's not available in the ShoppingCartWidget
-            orderList: orderList, // Pass the orderList to the OrderScreen
+            orderData:
+                orderList, // Pass an empty list as it's not available in the ShoppingCartWidget
+            orderList: [], // Pass the orderList to the OrderScreen
           ),
         ),
       );

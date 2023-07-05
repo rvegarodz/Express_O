@@ -22,7 +22,7 @@ class LandingPage extends StatelessWidget {
     final screenSize = MediaQuery.of(context).size;
     final isLargeScreen = screenSize.width > 600;
 
-    final welcomeFontSize = isLargeScreen ? 70.0 : 50.0;
+    final welcomeFontSize = isLargeScreen ? 70.0 : 30.0;
     final descriptionFontSize = isLargeScreen ? 40.0 : 30.0;
     final avatarRadius = isLargeScreen ? 60.0 : 40.0;
 
