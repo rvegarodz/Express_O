@@ -65,7 +65,7 @@ class LandingPage extends StatelessWidget {
                     textAlign: TextAlign.left,
                   ),
                 ),
-                SizedBox(height: 100),
+                SizedBox(height: 200),
                 LayoutBuilder(
                   builder: (BuildContext context, BoxConstraints constraints) {
                     if (constraints.maxWidth > 600) {
