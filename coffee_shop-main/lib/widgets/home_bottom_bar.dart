@@ -1,7 +1,19 @@
-import 'package:coffee_shop/screens/log_in_screen.dart';
+import 'package:coffee_shop/screens/order_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class HomeBottomBar extends StatelessWidget {
+  final List<dynamic> orderList;
+  final User user;
+  final String time;
+
+  const HomeBottomBar({
+    Key? key,
+    required this.orderList,
+    required this.user,
+    required this.time,
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -18,56 +30,46 @@ class HomeBottomBar extends StatelessWidget {
         ],
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SizedBox(height: 80),
           Material(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-              child: InkWell(
-                onTap: () {
+            color: Color(0xFFE57734),
+            borderRadius: BorderRadius.circular(10),
+            child: InkWell(
+              onTap: () async {
+                if (orderList.isNotEmpty) {
                   Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => LogInPage(),
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => OrderScreen(
+                                user: user,
+                                time: time,
+                                orderData: orderList,
+                                orderList: [],
+                              )));
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('No items selected.'),
+                      backgroundColor: Color(0xFFE57734),
                     ),
                   );
-                },
-                child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 15, horizontal: 50),
-                  child: Text("Order",
-                      style: TextStyle(
-                        color: Color(0xFFE57734),
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 1,
-                      )),
+                }
+              },
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: 15, horizontal: 50),
+                child: Text(
+                  "Checkout",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 1,
+                  ),
                 ),
-              )),
-          SizedBox(height: 80),
-          Material(
-              color: Color(0xFFE57734),
-              borderRadius: BorderRadius.circular(10),
-              child: InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => LogInPage(),
-                    ),
-                  );
-                },
-                child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 15, horizontal: 50),
-                  child: Text("Pay",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 1,
-                      )),
-                ),
-              ))
+              ),
+            ),
+          ),
         ],
       ),
     );

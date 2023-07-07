@@ -15,8 +15,6 @@ class SignUpPageState extends State<SignUpPage> {
 
   late String _email;
   late String _password;
-  late String name;
-  late String age;
 
   bool _isLoading = false;
 
@@ -55,12 +53,13 @@ class SignUpPageState extends State<SignUpPage> {
         setState(() {
           _isLoading = false;
         });
-
+        print("$e.code");
         if (e.code == 'email-already-in-use') {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('The email address is already in use.'),
               duration: Duration(seconds: 3),
+              backgroundColor: Color(0xFFE57734),
             ),
           );
         } else if (e.code == 'weak-password') {
@@ -68,6 +67,7 @@ class SignUpPageState extends State<SignUpPage> {
             const SnackBar(
               content: Text('The password provided is too weak.'),
               duration: Duration(seconds: 3),
+              backgroundColor: Color(0xFFE57734),
             ),
           );
         } else {
@@ -75,6 +75,7 @@ class SignUpPageState extends State<SignUpPage> {
             const SnackBar(
               content: Text('Failed to sign up.'),
               duration: Duration(seconds: 3),
+              backgroundColor: Color(0xFFE57734),
             ),
           );
         }
@@ -82,13 +83,6 @@ class SignUpPageState extends State<SignUpPage> {
         setState(() {
           _isLoading = false;
         });
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Failed to sign up.'),
-            duration: Duration(seconds: 3),
-          ),
-        );
       }
     }
   }
@@ -96,85 +90,112 @@ class SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Container(
-            padding: EdgeInsets.only(top: 100, bottom: 40),
-            decoration: BoxDecoration(
-              color: Colors.black,
-              image: DecorationImage(
-                image: AssetImage("images/Coffee1.jpg"),
-                fit: BoxFit.cover,
-                opacity: 0.6,
+      body: Container(
+        padding: EdgeInsets.only(top: 100, bottom: 40),
+        decoration: BoxDecoration(
+          color: Colors.black,
+          image: DecorationImage(
+            image: AssetImage("images/Coffee1.jpg"),
+            fit: BoxFit.cover,
+            opacity: 0.6,
+          ),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              "Sign Up",
+              style: GoogleFonts.pacifico(
+                fontSize: 50,
+                color: Colors.white,
               ),
             ),
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Sign Up",
-                    style: GoogleFonts.pacifico(
-                      fontSize: 50,
-                      color: Colors.white,
-                    ),
-                  ),
-                  Expanded(
-                      child: Center(
-                    child: SingleChildScrollView(
-                      padding: const EdgeInsets.all(16),
-                      child: Form(
-                        key: _formKey,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
+            Expanded(
+              child: Center(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.all(16),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        TextFormField(
+                          decoration: const InputDecoration(
+                            labelText: 'Email',
+                            filled: true,
+                            fillColor: Colors.white,
+                            labelStyle: TextStyle(
+                              color: Color(0xFFE57734),
+                            ),
+                          ),
+                          keyboardType: TextInputType.emailAddress,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your email address.';
+                            }
+                            return null;
+                          },
+                          onChanged: (value) {
+                            _email = value.trim();
+                          },
+                        ),
+                        const SizedBox(height: 16.0),
+                        TextFormField(
+                          decoration: const InputDecoration(
+                            labelText: 'Password',
+                            filled: true,
+                            fillColor: Colors.white,
+                            labelStyle: TextStyle(
+                              color: Color(0xFFE57734),
+                            ),
+                          ),
+                          obscureText: true,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your password.';
+                            }
+                            return null;
+                          },
+                          onChanged: (value) {
+                            _password = value.trim();
+                          },
+                        ),
+                        SizedBox(height: 32.0, width: 32.0),
+                        Column(
                           children: [
-                            TextFormField(
-                              decoration: const InputDecoration(
-                                  labelText: 'Email',
-                                  filled: true,
-                                  fillColor: Colors.white),
-                              keyboardType: TextInputType.emailAddress,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter your email address.';
-                                }
-                                return null;
-                              },
-                              onChanged: (value) {
-                                _email = value.trim();
-                              },
-                            ),
-                            const SizedBox(height: 16.0),
-                            TextFormField(
-                              decoration: const InputDecoration(
-                                  labelText: 'Password',
-                                  filled: true,
-                                  fillColor: Colors.white),
-                              obscureText: true,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter your password.';
-                                }
-                                return null;
-                              },
-                              onChanged: (value) {
-                                _password = value.trim();
-                              },
-                            ),
-                            const SizedBox(height: 32.0, width: 32.0),
-                            ElevatedButton(
-                              onPressed: _isLoading ? null : _submitForm,
-                              child: _isLoading
-                                  ? const CircularProgressIndicator()
-                                  : const Text('Sign up'),
-                              style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all<Color>(
-                                        Colors.orange),
+                            SizedBox(height: 80),
+                            Material(
+                              color: Color(0xFFE57734),
+                              borderRadius: BorderRadius.circular(10),
+                              child: InkWell(
+                                onTap:
+                                    _submitForm, // Call the _submitForm method here
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 15, horizontal: 50),
+                                  child: Text(
+                                    _isLoading ? 'Signing up...' : 'Sign up',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.bold,
+                                      letterSpacing: 1,
+                                    ),
+                                  ),
+                                ),
                               ),
                             ),
                           ],
                         ),
-                      ),
+                      ],
                     ),
-                  ))
-                ])));
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

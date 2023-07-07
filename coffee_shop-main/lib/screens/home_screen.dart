@@ -1,10 +1,16 @@
-import 'package:coffee_shop/widgets/home_bottom_bar.dart';
 import 'package:coffee_shop/widgets/items_widget.dart';
+import 'package:coffee_shop/widgets/home_bottom_bar.dart';
+import 'package:coffee_shop/widgets/phone_items-widget.dart';
+import 'package:coffee_shop/widgets/date_time.dart';
+import 'package:coffee_shop/widgets/shopping_cart.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../widgets/sort_rounded.dart';
+
 class HomeScreen extends StatefulWidget {
-  final User user;
+  final User? user;
+
   final List<String> orderList = [];
 
   HomeScreen({Key? key, required this.user}) : super(key: key);
@@ -17,12 +23,15 @@ class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   late User user;
+  late int cartItemCount = 0;
+  List<dynamic> orderList = [];
+  String time = orderTime();
 
   @override
   void initState() {
-    _tabController = TabController(length: 3, vsync: this, initialIndex: 0);
+    _tabController = TabController(length: 1, vsync: this, initialIndex: 0);
     _tabController.addListener(_handleTabSelection);
-    user = widget.user;
+    user = widget.user!;
     super.initState();
   }
 
@@ -38,10 +47,18 @@ class _HomeScreenState extends State<HomeScreen>
     super.dispose();
   }
 
+  void updateOrderList(List<dynamic> newOrderList) {
+    setState(() {
+      orderList = newOrderList;
+      cartItemCount = orderList.length;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final String? userName = user.email;
     return Scaffold(
+      drawer: MyDrawer(),
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.only(top: 15),
@@ -52,22 +69,26 @@ class _HomeScreenState extends State<HomeScreen>
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    InkWell(
-                      onTap: () {},
-                      child: Icon(
-                        Icons.sort_rounded,
-                        color: Colors.white.withOpacity(0.5),
-                        size: 35,
+                    Builder(
+                      builder: (context) => InkWell(
+                        onTap: () {
+                          Scaffold.of(context).openDrawer();
+                        },
+                        child: Icon(
+                          Icons.sort_rounded,
+                          color: Colors.white.withOpacity(0.5),
+                          size: 35,
+                        ),
                       ),
                     ),
                     InkWell(
-                      onTap: () {},
-                      child: Icon(
-                        Icons.shopping_cart,
-                        color: Colors.white,
-                        size: 35,
-                      ),
-                    ),
+                        onTap: () {},
+                        child: ShoppingCartWidget(
+                          cartItemCount: cartItemCount,
+                          orderList: [],
+                          time: '',
+                          user: user,
+                        ))
                   ],
                 ),
               ),
@@ -100,24 +121,38 @@ class _HomeScreenState extends State<HomeScreen>
                 labelPadding: EdgeInsets.symmetric(horizontal: 20),
                 tabs: [
                   Tab(text: "Coffee"),
-                  Tab(text: "Drinks"),
-                  Tab(text: "Food"),
                 ],
               ),
-              SizedBox(height: 10),
-              Center(
-                child: [
-                  ItemsWidget(),
-                  ItemsWidget(),
-                  ItemsWidget(),
-                  ItemsWidget(),
-                ][_tabController.index],
-              )
+              SizedBox(height:10),
+             Center(
+              child: LayoutBuilder(
+                builder: (BuildContext context, BoxConstraints constraints) {
+                  if (constraints.maxWidth >= 600) {
+                    // Laptop or larger screen size
+                    return ItemsWidget(
+                      user: widget.user,
+                      orderList: orderList,
+                      updateOrderList: updateOrderList,
+                      time: time,
+                    );
+                  } else {
+                    // Phone or smaller screen size
+                    return PhoneItemsWidget(
+                      user: widget.user,
+                      orderList: orderList,
+                      updateOrderList: updateOrderList,
+                      time: time,
+                    );
+                  }
+                },
+              ),
+              ),
             ],
           ),
         ),
       ),
-      bottomNavigationBar: HomeBottomBar(),
+      bottomNavigationBar:
+          HomeBottomBar(user: user, orderList: orderList, time: time),
     );
   }
 }

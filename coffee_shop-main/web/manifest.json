@@ -1,6 +1,6 @@
 {
-    "name": "coffee_shop",
-    "short_name": "coffee_shop",
+    "name": "Express-O",
+    "short_name": "Express-O",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
