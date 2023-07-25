@@ -1,23 +1,25 @@
-# Coffee Rewards Programs Using Web3 technology
+# Express O' - Coffee Shop Web App
 
-General descirption: Our coffee reward programs is a point-based program designed to increase customer engagement and purchases in exchange for discounts and other benefits.
+## Table of Content
+- Description
+- Technologies
+- Usage
+- Credits
+
+## Description
+Express O' is a dynamic Flutter Web-App for a Coffee Shop that serves as a testament to our team's web development skills and creativity. Developed as a portfolio project for Holberton School Puerto Rico, Express O showcases our expertise in utilizing Flutter, Firebase, and Stripe to create a seamless and user-friendly online ordering system for coffee shops. From designing an intuitive user interface to implementing secure payment integration, Express O demonstrates our commitment to delivering high-quality web applications.
+
+## Techonologies
+For the development of the Express O, we used the Flutter framework and programmed in Dart, taking advantage of its cross-platform capabilities. User Authentication and Data Storage were handled using Firebase, which provides a reliable and scalable backend solution. Additionally, the payment collection functionality was implemented through integration with Stripe, a popular payment gateway, with a Go server acting as the intermediary for communication between the web app and Stripe.
+
+This is the technologies and tools used in the app, and how interect with the user:
+
+<foto arquitectura>
+
+## Usage
+
+https://express-o.netlify.app/
 
 
-## Front-end and Database
- - Dart / Flutter / Firebase:
-    - To start building a flutter app: https://docs.flutter.dev/get-started/codelab
-       - Here is the final code of the tutorial: https://dartpad.dev/?id=e7076b40fb17a0fa899f9f7a154a02e8
-       - This code is necessary to the following tutorial:
-         - https://medium.com/flutter-community/build-a-marketplace-in-your-flutter-app-and-accept-payments-using-stripe-and-firebase-72f3f7228625
-    - https://protocoderspoint.com/paypal-payment-integration-in-flutter-app/
-    
-## Web3 (not priority)
- - Web3 information:
-    - example
-   
-## POS (not necessary)
-- POS information (poynt):
-    - poynt api: 
-        - https://docs.poynt.com/api-reference/index.html#head-introduction
-        - https://github.com/poynt/poynt-python
-    - how to customize your emailed/text receipts: https://support.poynt.com/hc/en-us/articles/360047165394-How-to-customize-your-emailed-text-receipts-
+## Credits
+Melissa Arroyo, Yahdiel Salda~a & Rafael O. Vega
